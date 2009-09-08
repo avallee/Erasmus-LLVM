@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="assembler.h" open="0" top="0" tabpos="18">
+		<Cursor position="934" topLine="5" />
+	</File>
+	<File name="ast.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="11119" topLine="300" />
+	</File>
+	<File name="ast.h" open="1" top="0" tabpos="2">
+		<Cursor position="60094" topLine="2087" />
+	</File>
+	<File name="bind.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="7373" topLine="370" />
+	</File>
+	<File name="check.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="41634" topLine="1404" />
+	</File>
+	<File name="enumerations.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="0" topLine="354" />
+	</File>
+	<File name="enumerations.h" open="1" top="0" tabpos="13">
+		<Cursor position="199" topLine="0" />
+	</File>
+	<File name="functions.cpp" open="1" top="0" tabpos="16">
+		<Cursor position="12423" topLine="280" />
+	</File>
+	<File name="functions.h" open="1" top="0" tabpos="15">
+		<Cursor position="293" topLine="0" />
+	</File>
+	<File name="gen.cpp" open="1" top="0" tabpos="10">
+		<Cursor position="5772" topLine="189" />
+	</File>
+	<File name="genassem.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="15126" topLine="593" />
+	</File>
+	<File name="genassem.h" open="1" top="0" tabpos="4">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="getters.cpp" open="1" top="0" tabpos="8">
+		<Cursor position="25274" topLine="1394" />
+	</File>
+	<File name="mec.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="16675" topLine="623" />
+	</File>
+	<File name="parser.cpp" open="1" top="0" tabpos="12">
+		<Cursor position="29735" topLine="1046" />
+	</File>
+	<File name="setters.cpp" open="1" top="0" tabpos="11">
+		<Cursor position="2201" topLine="104" />
+	</File>
+	<File name="show.cpp" open="1" top="0" tabpos="9">
+		<Cursor position="14317" topLine="595" />
+	</File>
+	<File name="types.h" open="1" top="0" tabpos="14">
+		<Cursor position="530" topLine="0" />
+	</File>
+	<File name="write.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="56913" topLine="2134" />
+	</File>
+</CodeBlocks_layout_file>

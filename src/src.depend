@@ -1,0 +1,216 @@
+# depslib dependency file v1.0
+1251656196 source:d:\erasmus\mel\src\assembler.c
+	"assembler.h"
+
+1252266444 d:\erasmus\mel\src\assembler.h
+	"typecodes.h"
+
+1252175343 d:\erasmus\mel\src\typecodes.h
+
+1252280035 source:d:\erasmus\mel\src\ast.cpp
+	"ast.h"
+
+1252286178 d:\erasmus\mel\src\ast.h
+	"basicblocks.h"
+	"enumerations.h"
+	"error.h"
+	"functions.h"
+	"types.h"
+	"typecodes.h"
+	"lts.h"
+	"genassem.h"
+	<set>
+	<vector>
+	<string>
+	<iostream>
+	<iomanip>
+	<sstream>
+	<cassert>
+
+1251649161 d:\erasmus\mel\src\basicblocks.h
+	"types.h"
+	<iostream>
+
+1252280670 d:\erasmus\mel\src\types.h
+	<list>
+	<set>
+	<string>
+	<vector>
+
+1251654662 d:\erasmus\mel\src\enumerations.h
+	<string>
+
+1251649161 d:\erasmus\mel\src\error.h
+	<iostream>
+	<iomanip>
+	<sstream>
+	<memory>
+	<stdexcept>
+
+1252247091 d:\erasmus\mel\src\functions.h
+	<iostream>
+	"types.h"
+
+1251649161 d:\erasmus\mel\src\lts.h
+	<string>
+	<vector>
+	<set>
+	<map>
+
+1251649161 source:d:\erasmus\mel\src\basicblocks.cpp
+	"basicblocks.h"
+	"ast.h"
+	"utilities.h"
+	<iostream>
+
+1251649161 d:\erasmus\mel\src\utilities.h
+	<string>
+
+1251649161 source:d:\erasmus\mel\src\bind.cpp
+	"ast.h"
+	<cassert>
+
+1251649161 source:d:\erasmus\mel\src\build.cpp
+	"ast.h"
+	"lts.h"
+
+1252195630 source:d:\erasmus\mel\src\check.cpp
+	"ast.h"
+	<cassert>
+	<map>
+
+1251649161 source:d:\erasmus\mel\src\drawast.cpp
+	<set>
+	"ast.h"
+	"utilities.h"
+
+1251649161 source:d:\erasmus\mel\src\enumerations.cpp
+	"enumerations.h"
+
+1251649161 source:d:\erasmus\mel\src\error.cpp
+	"error.h"
+
+1251649161 source:d:\erasmus\mel\src\extract.cpp
+	"ast.h"
+	"utilities.h"
+
+1251649161 source:d:\erasmus\mel\src\forany.cpp
+	"ast.h"
+
+1252195817 source:d:\erasmus\mel\src\functions.cpp
+	"ast.h"
+	"functions.h"
+	<cassert>
+	<map>
+	<fstream>
+
+1251649161 source:d:\erasmus\mel\src\gen.cpp
+	"ast.h"
+	"utilities.h"
+
+1252158145 source:d:\erasmus\mel\src\getters.cpp
+	"ast.h"
+	"utilities.h"
+	<cassert>
+	<sstream>
+
+1251649161 source:d:\erasmus\mel\src\lookup.cpp
+	"ast.h"
+
+1251649161 source:d:\erasmus\mel\src\lts.cpp
+	<iostream>
+	<iomanip>
+	<map>
+	"lts.h"
+
+1252113009 source:d:\erasmus\mel\src\mec.cpp
+	"ast.h"
+	"basicblocks.h"
+	"error.h"
+	"functions.h"
+	"parser.h"
+	"scanner.h"
+	"types.h"
+	"utilities.h"
+	"genassem.h"
+	<iostream>
+	<iomanip>
+	<fstream>
+	<sstream>
+	<list>
+	<map>
+
+1251649161 d:\erasmus\mel\src\parser.h
+	"scanner.h"
+	"ast.h"
+	<list>
+	<stack>
+
+1251649161 d:\erasmus\mel\src\scanner.h
+	"token.h"
+	<list>
+	<map>
+	<string>
+	<vector>
+
+1251649161 d:\erasmus\mel\src\token.h
+	"error.h"
+	<string>
+
+1252157413 source:d:\erasmus\mel\src\parser.cpp
+	"ast.h"
+	"enumerations.h"
+	"parser.h"
+	"scanner.h"
+	"utilities.h"
+	<cassert>
+	<iostream>
+	<sstream>
+	<list>
+	<string>
+	<stack>
+
+1251649161 source:d:\erasmus\mel\src\prettyprint.cpp
+	"ast.h"
+	"utilities.h"
+
+1251649161 source:d:\erasmus\mel\src\queries.cpp
+	"ast.h"
+
+1251649161 source:d:\erasmus\mel\src\scanner.cpp
+	"error.h"
+	"scanner.h"
+	<cassert>
+	<cstring>
+	<fstream>
+	<iostream>
+	<string>
+	<vector>
+
+1252272809 source:d:\erasmus\mel\src\setters.cpp
+	"ast.h"
+
+1252158359 source:d:\erasmus\mel\src\show.cpp
+	"ast.h"
+	"utilities.h"
+
+1251649161 source:d:\erasmus\mel\src\utilities.cpp
+	"utilities.h"
+	<iostream>
+	<map>
+	<sstream>
+
+1251649161 source:d:\erasmus\mel\src\write.cpp
+	"ast.h"
+	"utilities.h"
+	<cassert>
+
+1252285485 d:\erasmus\mel\src\genassem.h
+	"types.h"
+
+1252286997 source:d:\erasmus\mel\src\genassem.cpp
+	"ast.h"
+	"assembler.h"
+	"functions.h"
+	<vector>
+
