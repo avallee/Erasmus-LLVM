@@ -1024,7 +1024,7 @@ private:
 // Lightning related stuff
 public:
    void genass(AssemPhase phase, AssemData aData);
-   void addJump(Patches keys)
+   void addJumps(Patches keys)
    {
       for (Patches::iterator i = keys.begin(); i != keys.end(); ++i)
          jumps.push_back(*i);

@@ -2,10 +2,10 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
 	<File name="assembler.c" open="1" top="0" tabpos="1">
-		<Cursor position="4472" topLine="207" />
+		<Cursor position="1280" topLine="32" />
 	</File>
-	<File name="assembler.h" open="1" top="0" tabpos="19">
-		<Cursor position="3428" topLine="133" />
+	<File name="assembler.h" open="1" top="0" tabpos="3">
+		<Cursor position="3428" topLine="7" />
 	</File>
 	<File name="config.h" open="0" top="0" tabpos="4">
 		<Cursor position="0" topLine="0" />
