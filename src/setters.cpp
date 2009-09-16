@@ -123,7 +123,6 @@ void BaseNode::setOffset(int os)
 void NameNode::setOffset(int os)
 {
    offset = os;
-   cerr << value << " @ " << offset << endl;
 }
 
 //--------------------------------------------------------- setType

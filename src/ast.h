@@ -290,8 +290,11 @@ public:
    /** Stop a thread (used only in ThreadCallNode). */
    virtual void stopThread(BlockList & blocks) {}
 
-   /** Generate Lightning assembler. */
-   virtual void genass(AssemPhase phase, AssemData aData);
+   /** Prepare for Lightning assembly. */
+   virtual void prepAssem(AssemData aData);
+
+   /** Perform Lightning assembly. */
+   virtual void genAssem();
 
    /** Add a Lightning jump instruction address. */
    virtual void addJumps(Patches keys) { }
@@ -614,7 +617,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** An instance of a cell or closure. */
@@ -650,7 +654,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Declaration for a C++ function or procedure that is defined externally. */
@@ -674,7 +679,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Body of a procedure with port and variable parameters. */
@@ -721,7 +727,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Body of a closure with port and variable parameters. */
@@ -773,7 +780,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** The root of a protocol expression tree. */
@@ -820,7 +828,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** A node containing a name and its definition.
@@ -879,7 +888,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Definition of a cell with port and variable parameters. */
@@ -918,7 +928,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** A sequence (list) of statements. */
@@ -947,7 +958,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Skip statement. */
@@ -963,7 +975,8 @@ public:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Exit statement. */
@@ -988,7 +1001,11 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
+private:
+   /** Pointer to parent IfNode, set by \a genass(). */
+   Node parent;
 };
 
 /** Root of an if statement: points to list of if/then pairs
@@ -1023,7 +1040,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
    void addJumps(Patches keys)
    {
       for (Patches::iterator i = keys.begin(); i != keys.end(); ++i)
@@ -1073,7 +1091,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 private:
    /** Pointer to parent IfNode, set by \a genass(). */
    Node parent;
@@ -1109,7 +1128,15 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
+   void addJumps(Patches keys)
+   {
+      for (Patches::iterator i = keys.begin(); i != keys.end(); ++i)
+         jumps.push_back(*i);
+   }
+private:
+   vector<void*> jumps;
 };
 
 /** For statement */
@@ -1152,7 +1179,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Any statement */
@@ -1201,7 +1229,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Set comprehension */
@@ -1257,7 +1286,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Set corresponding to a range of values */
@@ -1309,7 +1339,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Initialization for range in for/any loop.
@@ -1353,7 +1384,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Termination test for range: generated by compiler. */
@@ -1402,7 +1434,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Step node for range: generated by compiler. */
@@ -1438,7 +1471,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Set corresponding to map variable */
@@ -1490,7 +1524,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Initialization for map in for/any loop.
@@ -1534,7 +1569,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Termination test for map: generated by compiler. */
@@ -1579,7 +1615,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Step node for map: generated by compiler. */
@@ -1621,7 +1658,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Set corresponding to enumeration type. */
@@ -1655,7 +1693,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Initialization for enumeration in for/any loop.
@@ -1680,7 +1719,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Step for enumeration in for/any loop.
@@ -1705,7 +1745,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Termination for enumeration in for/any loop.
@@ -1736,7 +1777,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Match test node: generated by compiler.
@@ -1761,7 +1803,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Select statement: defines policy, points to options. */
@@ -1809,7 +1852,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** One branch of a select statement. */
@@ -1859,7 +1903,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** An expression p.f, where p is a port name
@@ -1899,7 +1944,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** An expression p?f, where p is a port name
@@ -1947,7 +1993,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Node for pervasive constant definitions. */
@@ -1991,7 +2038,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Node used for constant, variable, and port declarations, and
@@ -2109,7 +2157,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
    int getOffset() const;
    int getTypeCode() const
    {
@@ -2148,7 +2197,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
    int getTypeCode() const
    {
       return TYPE_BOOL;
@@ -2184,7 +2234,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Text literal. */
@@ -2218,7 +2269,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Numeric literal: may be Integer, Float, or Decimal. */
@@ -2258,7 +2310,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
    int getTypeCode() const
    {
       return type->getTypeCode();
@@ -2296,7 +2349,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Root of a binary operator expression. */
@@ -2342,7 +2396,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
    Node getLHS() const
    {
       return lhs;
@@ -2399,7 +2454,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Root of a unary operator expression/ */
@@ -2443,7 +2499,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Subscript expression */
@@ -2489,7 +2546,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Subrange expression: a[i..j] */
@@ -2525,7 +2583,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Iterator statements and expressions */
@@ -2562,7 +2621,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** The basic type Void. */
@@ -2932,7 +2992,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Array types. */
@@ -2976,7 +3037,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Map (indexed) types. */
@@ -3012,7 +3074,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
    int getSize() const;
 };
 
@@ -3033,7 +3096,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** The root of a function call expression.
@@ -3080,7 +3144,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** A defining or defined occurrence of an identifier. */
@@ -3190,13 +3255,15 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
    int getOffset() const;
    int getTypeCode() const
    {
-      return definingOccurrence ?
-             type->getTypeCode() :
-             definition->getTypeCode();
+      if (definingOccurrence)
+         return type ? type->getTypeCode() : 0;
+      else
+         return definition ? definition->getTypeCode() : 0;
    }
 
 private:
@@ -3222,7 +3289,8 @@ public:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** A node generated to send a message unconditionally. */
@@ -3258,7 +3326,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** A node generated to send a message in a select statement. */
@@ -3298,7 +3367,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** A node generated to complete the receive operation. */
@@ -3338,7 +3408,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** A node generated to prepare for a receive operation
@@ -3383,7 +3454,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Definition of a thread. */
@@ -3432,7 +3504,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Thread parameter. */
@@ -3484,7 +3557,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Start statement. */
@@ -3513,7 +3587,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Thread invocation. */
@@ -3564,7 +3639,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Start a thread. */
@@ -3589,7 +3665,8 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 /** Stop a thread. */
@@ -3611,7 +3688,9 @@ private:
 
 // Lightning related stuff
 public:
-   void genass(AssemPhase phase, AssemData aData);
+   void prepAssem(AssemData aData);
+   void genAssem();
 };
 
 #endif
+

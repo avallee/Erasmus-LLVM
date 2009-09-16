@@ -560,8 +560,8 @@ bool compile(string clArg)
          if (comRun)
          {
             AssemData aData;
-            prog->genass(SETOFFSETS, aData);
-            prog->genass(GENERATE, aData);
+            prog->prepAssem(aData);
+            prog->genAssem();
          }
          else
          {

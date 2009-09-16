@@ -1,61 +1,70 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="assembler.h" open="0" top="0" tabpos="18">
-		<Cursor position="934" topLine="5" />
+	<File name="assembler.h" open="1" top="0" tabpos="18">
+		<Cursor position="934" topLine="0" />
 	</File>
 	<File name="ast.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="11119" topLine="300" />
+		<Cursor position="4208" topLine="124" />
 	</File>
 	<File name="ast.h" open="1" top="0" tabpos="2">
-		<Cursor position="30738" topLine="1004" />
+		<Cursor position="8010" topLine="250" />
 	</File>
 	<File name="bind.cpp" open="1" top="0" tabpos="5">
 		<Cursor position="7373" topLine="370" />
 	</File>
 	<File name="check.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="41634" topLine="1404" />
+		<Cursor position="22121" topLine="704" />
+	</File>
+	<File name="drawAST.cpp" open="1" top="0" tabpos="19">
+		<Cursor position="1536" topLine="54" />
 	</File>
 	<File name="enumerations.cpp" open="0" top="0" tabpos="6">
 		<Cursor position="0" topLine="354" />
 	</File>
 	<File name="enumerations.h" open="1" top="0" tabpos="13">
-		<Cursor position="199" topLine="0" />
+		<Cursor position="509" topLine="12" />
+	</File>
+	<File name="forany.cpp" open="1" top="0" tabpos="17">
+		<Cursor position="2916" topLine="79" />
 	</File>
 	<File name="functions.cpp" open="1" top="0" tabpos="16">
-		<Cursor position="12423" topLine="280" />
+		<Cursor position="12105" topLine="270" />
 	</File>
 	<File name="functions.h" open="1" top="0" tabpos="15">
 		<Cursor position="293" topLine="0" />
 	</File>
 	<File name="gen.cpp" open="1" top="0" tabpos="10">
-		<Cursor position="5772" topLine="189" />
+		<Cursor position="7503" topLine="258" />
 	</File>
 	<File name="genassem.cpp" open="1" top="1" tabpos="3">
-		<Cursor position="15490" topLine="605" />
+		<Cursor position="4256" topLine="144" />
 	</File>
 	<File name="genassem.h" open="1" top="0" tabpos="4">
-		<Cursor position="219" topLine="0" />
+		<Cursor position="995" topLine="0" />
 	</File>
 	<File name="getters.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="25274" topLine="1394" />
+		<Cursor position="39702" topLine="2075" />
 	</File>
 	<File name="mec.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="16675" topLine="623" />
+		<Cursor position="16596" topLine="660" />
 	</File>
 	<File name="parser.cpp" open="1" top="0" tabpos="12">
-		<Cursor position="29735" topLine="1046" />
+		<Cursor position="29806" topLine="1052" />
 	</File>
 	<File name="setters.cpp" open="1" top="0" tabpos="11">
-		<Cursor position="2201" topLine="104" />
+		<Cursor position="2157" topLine="103" />
 	</File>
 	<File name="show.cpp" open="1" top="0" tabpos="9">
 		<Cursor position="14317" topLine="595" />
 	</File>
-	<File name="types.h" open="1" top="0" tabpos="14">
-		<Cursor position="530" topLine="0" />
+	<File name="typecodes.h" open="0" top="0" tabpos="0">
+		<Cursor position="494" topLine="0" />
 	</File>
-	<File name="write.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="56913" topLine="2134" />
+	<File name="types.h" open="1" top="0" tabpos="14">
+		<Cursor position="566" topLine="0" />
+	</File>
+	<File name="write.cpp" open="1" top="0" tabpos="18">
+		<Cursor position="24989" topLine="855" />
 	</File>
 </CodeBlocks_layout_file>
