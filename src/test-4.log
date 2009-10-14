@@ -1,0 +1,57 @@
+MEC 2009 September 6 21:33:53
+
+Input file 'temp_1.e':
+   1 proc = process |
+   2   a: Integer := 5;
+   3   b: Integer := 9;
+   4   a := 13;
+   5   b := a;
+   6 end
+   7 
+   8 master = cell
+   9   proc()
+  10 end
+  11 
+  12 master()
+
+Modified source code:
+proc =  process  |
+    a: int := 5
+    b: int := 9
+    a := 13
+    b := a
+end
+master = cell proc()
+end
+master()
+
+AST after code generation:
+
+  1  51 Program ->27
+  1  43 Def ->27  = 
+  1    28 Name new proc 2 field 0
+  1    42 Process  'proc' 1
+  2      41 Seq ->43
+  2        31 Dec ->41 mk= portDir= ck= := 
+  2          29 Name new a 5 (proc) field 1 offset 12
+                5 Integer Type signed
+              5 Integer Type signed
+  2          30 Num evm# 6 Integer 5
+  3        34 Dec ->31 mk= portDir= ck= := 
+  3          32 Name new b 10 (proc) field 2 offset 16
+                5 Integer Type signed
+              5 Integer Type signed
+  3          33 Num evm# 11 Integer 9
+  4        37 Dec ->34 mk= portDir= ck= := 
+  4          35 Name ->34 a 5 (proc) def=31
+  4          36 Num evm# 14 Integer 13
+  5        40 Dec ->37 mk= portDir= ck= := 
+  5          38 Name ->37 b 10 (proc) def=34
+  5          39 Name ->37 a 5 (proc) def=31
+  8  48 Def ->43  = 
+  8    44 Name new master 20 field 3
+  8    47 Cell 
+  9      46 Instance ->48
+  9        45 Name ->48 proc 2 def=43
+ 12  50 Instance ->48
+ 12    49 Name ->48 master 20 def=48

@@ -1,0 +1,75 @@
+MEC 2009 September 6 21:33:53
+
+Input file 'temp_1.e':
+   1 proc = process |
+   2   a: Integer := 5;
+   3   if a > 7
+   4     then a := 9
+   5   elif a = 11
+   6     then a := 13
+   7     else a := 15
+   8   end
+   9 end
+  10 
+  11 master = cell
+  12   proc()
+  13 end
+  14 
+  15 master()
+
+Modified source code:
+proc =  process  |
+    a: int := 5
+    if (a) > (7) then
+        a := 9
+    else if (a) == (11) then
+        a := 13
+    else 
+      a := 15
+end
+master = cell proc()
+end
+master()
+
+AST after code generation:
+
+  1  63 Program ->27
+  1  55 Def ->27  = 
+  1    28 Name new proc 2 field 0
+  1    54 Process  'proc' 1
+  2      53 Seq ->55
+  2        31 Dec ->53 mk= portDir= ck= := 
+  2          29 Name new a 5 (proc) field 1 offset 12
+                5 Integer Type signed
+              5 Integer Type signed
+  2          30 Num evm# 6 Integer 5
+  3        52 If ->31
+  3          39 CondPair ->31
+  3            34 Binop ->39 ' > '
+                  2 Bool Type 
+  3              32 Name ->39 a 5 (proc) def=31
+  3              33 Num evm# 12 Integer 7
+  4            38 Seq ->39
+  4              37 Dec ->38 mk= portDir= ck= := 
+  4                35 Name ->38 a 5 (proc) def=31
+  4                36 Num evm# 13 Integer 9
+  6          47 CondPair ->31
+  5            42 Binop ->47 ' == '
+                  2 Bool Type 
+  5              40 Name ->47 a 5 (proc) def=31
+  5              41 Num evm# 18 Integer 11
+  6            46 Seq ->47
+  6              45 Dec ->46 mk= portDir= ck= := 
+  6                43 Name ->46 a 5 (proc) def=31
+  6                44 Num evm# 19 Integer 13
+  7          51 Seq ->31
+  7            50 Dec ->51 mk= portDir= ck= := 
+  7              48 Name ->51 a 5 (proc) def=31
+  7              49 Num evm# 22 Integer 15
+ 11  60 Def ->55  = 
+ 11    56 Name new master 26 field 2
+ 11    59 Cell 
+ 12      58 Instance ->60
+ 12        57 Name ->60 proc 2 def=55
+ 15  62 Instance ->60
+ 15    61 Name ->60 master 26 def=60

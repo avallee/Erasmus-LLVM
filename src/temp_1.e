@@ -1,0 +1,15 @@
+proc = process |
+  a: Integer := 5;
+  if a > 7
+    then a := 9
+  elif a = 11
+    then a := 13
+    else a := 15
+  end
+end
+
+master = cell
+  proc()
+end
+
+master()
