@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <sstream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -643,7 +644,7 @@ string SubscriptNode::getFullName(bool withpointer) const
 {
    ostringstream os;
    os << base->getFullName(withpointer) << '[';
-   sub->write(os);
+   //sub->write(os);
    os << ']';
    return os.str();
 }

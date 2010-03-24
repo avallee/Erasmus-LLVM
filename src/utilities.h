@@ -15,6 +15,7 @@
 #define TAB5 code << "               "
 #define TAB6 code << "                  "
 
+#include <cstdlib>
 #include <string>
 
 using namespace std;

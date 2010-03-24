@@ -108,11 +108,11 @@ ostream & operator<<(ostream & code, Block bb)
       {
          // Kludge to ensure that 'a &e x &e y' is printed correctly.
          TAB3;
-         (*it)->write(code);
+         //(*it)->write(code);
          code << ";\n";
       }
-      else
-         (*it)->write(code);
+      //else
+         //(*it)->write(code);
    }
 
    if (bb->writeTransfer)

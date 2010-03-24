@@ -13,7 +13,7 @@
 #include "typecodes.h"
 #include "lts.h"
 
-#include "genassem.h" // Lightning
+//#include "genassem.h" // Lightning
 
 #include <set>
 #include <vector>
@@ -237,10 +237,10 @@ public:
    virtual void genBlocks(BlockList & blocks, bool storeBlock = false);
 
    /** Write parts of the source code for this node to the  stream \a code.*/
-   virtual void writeParts(ostream & code, WriteMode wm);
+   //virtual /*void writeParts(ostream & code, WriteMode wm);*/
 
    /** Write executable statements for this node to the stream \a code */
-   virtual void write(ostream & code);
+   //virtual /*void write(ostream & code);*/
 
    /** Mark this node as \a defined. */
    virtual void setDefining(bool def = true);
@@ -279,7 +279,7 @@ public:
    virtual void setPassByReference();
 
    /** Write the 'exists' check for a SubscriptNode. */
-   virtual void writeExistCheck(ostream & code) {}
+   //virtual void writeExistCheck(ostream & code) {}
 
    /** Return input and output parameters of a Thread. */
    virtual void getThreadParams(List & inpars, List & outpars);
@@ -291,10 +291,10 @@ public:
    virtual void stopThread(BlockList & blocks) {}
 
    /** Prepare for Lightning assembly. */
-   virtual void prepAssem(AssemData aData);
+   //virtual void prepAssem(AssemData aData);
 
    /** Perform Lightning assembly. */
-   virtual void genAssem();
+   //virtual void genAssem();
 
    /** Add a Lightning jump instruction address. */
    virtual void addJumps(Patches keys) { }
@@ -380,10 +380,10 @@ public:
    virtual int getOffset() const;
 
    /** Get size of type for Lightning assembly. */
-   virtual int getSize() const
-   {
-      return 0;
-   }
+   //virtual int getSize() const
+   //{
+   //   return 0;
+   //}
 
    /** Get low bound of array. */
    virtual Node getLo() const;
@@ -603,8 +603,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    List extract(int & tempNum);
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
@@ -615,10 +615,10 @@ private:
    /** List of definitions and a cell instantiation. */
    List nodes;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** An instance of a cell or closure. */
@@ -630,8 +630,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -652,10 +652,10 @@ private:
    /** This is a top-level instance. */
    bool topLevel;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Declaration for a C++ function or procedure that is defined externally. */
@@ -677,10 +677,10 @@ private:
    /** Return type, 0 for a procedure. */
    Node type;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Body of a procedure with port and variable parameters. */
@@ -692,8 +692,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void setName(string n);
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
@@ -725,10 +725,10 @@ private:
    /** Basic blocks for code. */
    BlockList blocks;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Body of a closure with port and variable parameters. */
@@ -740,8 +740,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void setName(string n);
    void setStartAddress(int s);
    void prettyPrint(ostream & os, int level = 0) const;
@@ -778,10 +778,10 @@ private:
    /** Block number for EVM code. */
    int evmBlockNum;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** The root of a protocol expression tree. */
@@ -826,10 +826,10 @@ private:
    /** Block number for EVM code. */
    int evmBlockNum;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** A node containing a name and its definition.
@@ -844,8 +844,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    void showBB(ostream & os) const;
@@ -886,10 +886,10 @@ private:
    /** An expression defining a type, protocol, etc. */
    Node value;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Definition of a cell with port and variable parameters. */
@@ -901,8 +901,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void setName(string n);
    int getEVMBlockNumber() const;
    Node getType() const;
@@ -926,10 +926,10 @@ private:
    /** Block number for EVM code. */
    int evmBlockNum;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** A sequence (list) of statements. */
@@ -941,8 +941,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    Node lookUp(string value, Errpos ep);
    List extract(int & tempNum);
    bool isEmpty() const;
@@ -956,10 +956,10 @@ private:
    /** The statements of the sequence. */
    List stmts;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Skip statement. */
@@ -973,10 +973,10 @@ public:
    Node lookUp(string value, Errpos ep);
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Exit statement. */
@@ -999,10 +999,10 @@ private:
    /** Address of loop end. */
    int loopEnd;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 private:
    /** Pointer to parent IfNode, set by \a genass(). */
    Node parent;
@@ -1019,9 +1019,9 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    List extract(int & tempNum);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void writeParts(ostream & code, WriteMode wm);*/
    Node lookUp(string value, Errpos ep);
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream  & os, int level = 0) const;
@@ -1038,10 +1038,10 @@ private:
    /** Address for end of statement. */
    int ifEnd;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
    void addJumps(Patches keys)
    {
       for (Patches::iterator i = keys.begin(); i != keys.end(); ++i)
@@ -1060,10 +1060,10 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    Node lookUp(string value, Errpos ep);
    List extract(int & tempNum);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1089,10 +1089,10 @@ private:
    /** Address for end of if statement. */
    int ifEnd;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 private:
    /** Pointer to parent IfNode, set by \a genass(). */
    Node parent;
@@ -1107,9 +1107,9 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    List extract(int & tempNum);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void writeParts(ostream & code, WriteMode wm);*/
    Node lookUp(string value, Errpos ep);
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
@@ -1126,7 +1126,7 @@ private:
    /** Address of end of loop. */
    int loopEnd;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
    void genAssem();
@@ -1134,7 +1134,7 @@ public:
    {
       for (Patches::iterator i = keys.begin(); i != keys.end(); ++i)
          jumps.push_back(*i);
-   }
+   }*/
 private:
    vector<void*> jumps;
 };
@@ -1150,7 +1150,7 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1177,10 +1177,10 @@ private:
    /** Block number for the next statement. */
    int forEnd;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Any statement */
@@ -1194,7 +1194,7 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1227,10 +1227,10 @@ private:
    /** Block number for the next statement. */
    int anyEnd;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Set comprehension */
@@ -1257,7 +1257,7 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1284,10 +1284,10 @@ private:
    /**  Predicate for filtering the set. */
    Node pred;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Set corresponding to a range of values */
@@ -1304,7 +1304,7 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1337,10 +1337,10 @@ private:
    /** Unique index for step. */
    int stepNum;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Initialization for range in for/any loop.
@@ -1351,7 +1351,7 @@ class RangeInitNode : public BaseNode
 public:
    RangeInitNode(Errpos ep, string owner, Node type, Node var, Node start,
                  Node finish, Node step, int finishNum, int stepNum);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1382,10 +1382,10 @@ private:
    /** Name of the containing closure. */
    string owner;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Termination test for range: generated by compiler. */
@@ -1395,7 +1395,7 @@ public:
    RangeTermNode(Errpos ep, string owner, Block bb, Node type, Node var,
                  Node step, int stepNum, Node finish,
                  int finishNum, bool open, bool ascending);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1432,10 +1432,10 @@ private:
    /** Name of the containing closure. */
    string owner;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Step node for range: generated by compiler. */
@@ -1444,7 +1444,7 @@ class RangeStepNode : public BaseNode
 public:
    RangeStepNode(Errpos ep, string owner, Node type, Node var, Node step,
                  int stepNum, bool ascending);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1469,10 +1469,10 @@ private:
    /** Name of the containing closure. */
    string owner;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Set corresponding to map variable */
@@ -1495,7 +1495,7 @@ public:
    void genBlocks(BlockList & blocks, bool storeBlock = false);
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
-   void writeParts(ostream & code, WriteMode wm);
+   /*void writeParts(ostream & code, WriteMode wm);*/
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
    MapKind getMapKind() const;
    MapSetKind getMapSetKind() const;
@@ -1522,10 +1522,10 @@ private:
    /** Name of the index variable, required for RANGE loops. */
    string indexName;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Initialization for map in for/any loop.
@@ -1536,7 +1536,7 @@ class MapInitNode : public BaseNode
 public:
    MapInitNode(Errpos ep, string owner, Node type, Node var, Node iter,
                MapKind mapKind, MapSetKind setKind, Node map, string indexName);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1567,10 +1567,10 @@ private:
    /** Name of the loop index variable, if needed. */
    string indexName;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Termination test for map: generated by compiler. */
@@ -1579,7 +1579,7 @@ class MapTermNode : public BaseNode
 public:
    MapTermNode(Errpos ep, string owner, Block bb, Node type, Node var,
                Node iter, MapKind mapKind, MapSetKind setKind, Node map, string indexName);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1613,10 +1613,10 @@ private:
    /** Name of the loop index variable, if needed. */
    string indexName;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Step node for map: generated by compiler. */
@@ -1625,7 +1625,7 @@ class MapStepNode : public BaseNode
 public:
    MapStepNode(Errpos ep, string owner, Node type, Node var, Node iter,
                MapKind mapKind, MapSetKind setKind, Node map, string indexName);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1656,10 +1656,10 @@ private:
    /** Name of the loop index variable, if needed. */
    string indexName;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Set corresponding to enumeration type. */
@@ -1679,7 +1679,7 @@ public:
    void genBlocks(BlockList & blocks, bool storeBlock = false);
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
-   void writeParts(ostream & code, WriteMode wm);
+   /*void writeParts(ostream & code, WriteMode wm);*/
 private:
 
    /**  The enumeration type to be traversed. */
@@ -1691,10 +1691,10 @@ private:
    /** Name of the containing closure. */
    string owner;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Initialization for enumeration in for/any loop.
@@ -1704,7 +1704,7 @@ class EnumInitNode : public BaseNode
 {
 public:
    EnumInitNode(Errpos ep, string owner, Node var);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1717,10 +1717,10 @@ private:
    /** Name of the containing closure. */
    string owner;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Step for enumeration in for/any loop.
@@ -1730,7 +1730,7 @@ class EnumStepNode : public BaseNode
 {
 public:
    EnumStepNode(Errpos ep, string owner, Node var);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1743,10 +1743,10 @@ private:
    /** Name of the containing closure. */
    string owner;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Termination for enumeration in for/any loop.
@@ -1756,7 +1756,7 @@ class EnumTermNode : public BaseNode
 {
 public:
    EnumTermNode(Errpos ep, string owner, Block bb, Node var, Node max);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1775,10 +1775,10 @@ private:
    /** Name of the containing closure. */
    string owner;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Match test node: generated by compiler.
@@ -1788,7 +1788,7 @@ class MatchNode : public BaseNode
 {
 public:
    MatchNode(Errpos ep, Block bb, Node pred);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1801,10 +1801,10 @@ private:
    /** Predicate to select eligible elements. */
    Node pred;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Select statement: defines policy, points to options. */
@@ -1818,8 +1818,8 @@ public:
    void genBlocks(BlockList & blocks, bool storeBlock = false);
    List extract(int & tempNum);
    Node lookUp(string value, Errpos ep);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1850,10 +1850,10 @@ private:
    /** Name of the containing closure. */
    string owner;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** One branch of a select statement. */
@@ -1866,8 +1866,8 @@ public:
    void gen(GenData gd);
    List extract(int & tempNum);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1901,10 +1901,10 @@ private:
    /** Name of the containing closure. */
    string owner;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** An expression p.f, where p is a port name
@@ -1942,10 +1942,10 @@ private:
    /** The 'f' in 'p.f'. */
    Node field;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** An expression p?f, where p is a port name
@@ -1972,7 +1972,7 @@ public:
    Node getField() const;
    Node getType() const;
    bool isConstant() const;
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -1991,10 +1991,10 @@ private:
    /** Determines how to generate code for a QueryNode. */
    int phase;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Node for pervasive constant definitions. */
@@ -2006,7 +2006,7 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -2036,10 +2036,10 @@ private:
    /** Block number for EVM code. */
    int evmBlockNum;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Node used for constant, variable, and port declarations, and
@@ -2061,8 +2061,8 @@ public:
    void setReference();
    void setParameter();
    void setTie(Node t);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void getx(int & fn) const;
    bool isReply() const;
    bool isReference() const;
@@ -2155,10 +2155,10 @@ private:
 //   /** Block number for EVM code. */
 //   int evmBlockNum;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
    int getOffset() const;
    int getTypeCode() const
    {
@@ -2172,7 +2172,7 @@ class BoolNode : public BaseNode
 public:
    BoolNode(Errpos ep, bool value);
    void check(CheckData & cd);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void genBlocks(BlockList & blocks, bool storeBlock = false);
    Node getType() const;
    string getCTypeString() const;
@@ -2195,10 +2195,10 @@ private:
    /** This literal does not yet have a data block in the EVM code. */
    bool noBlockYet;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
    int getTypeCode() const
    {
       return TYPE_BOOL;
@@ -2212,8 +2212,8 @@ public:
    CharNode(Errpos ep, char value);
    void check(CheckData & cd);
    void gen(GenData gd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    Node getType() const;
    string getCTypeString() const;
    string getNameString() const;
@@ -2232,10 +2232,10 @@ private:
    /** This literal does not yet have a data block in the EVM code. */
    bool noBlockYet;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Text literal. */
@@ -2245,8 +2245,8 @@ public:
    TextNode(Errpos ep, string value);
    void check(CheckData & cd);
    void gen(GenData gd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    Node getType() const;
    Node getDomainType() const;
    Node getRangeType() const;
@@ -2267,10 +2267,10 @@ private:
    /** This literal does not yet have a data block in the EVM code. */
    bool noBlockYet;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Numeric literal: may be Integer, Float, or Decimal. */
@@ -2279,8 +2279,8 @@ class NumNode : public BaseNode
 public:
    NumNode(Errpos ep, Node type, string value);
    void check(CheckData & cd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    void gen(GenData gd);
    void negate();
    Node getType() const;
@@ -2308,10 +2308,10 @@ private:
    /** This literal does not yet have a data block in the EVM code. */
    bool noBlockYet;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
    int getTypeCode() const
    {
       return type->getTypeCode();
@@ -2347,10 +2347,10 @@ private:
    List args;
 
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Root of a binary operator expression. */
@@ -2362,8 +2362,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void writeParts(ostream & code, WriteMode wm);
-   void write(ostream & code);
+   /*void writeParts(ostream & code, WriteMode wm);*/
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    void getx(int & fn) const;
@@ -2394,10 +2394,10 @@ private:
      * required when the block is written. */
    Block bb;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
    Node getLHS() const
    {
       return lhs;
@@ -2422,8 +2422,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void writeParts(ostream & code, WriteMode wm);
-   void write(ostream & code);
+   /*void writeParts(ostream & code, WriteMode wm);*/
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -2452,10 +2452,10 @@ private:
      * required when the block is written. */
    Block bb;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Root of a unary operator expression/ */
@@ -2467,7 +2467,7 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    void getx(int & fn) const;
@@ -2497,10 +2497,10 @@ private:
      * required when the block is written. */
    Block bb;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Subscript expression */
@@ -2512,9 +2512,9 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void setDefining(bool def);
-   void writeExistCheck(ostream & code); // patch
+   //void writeExistCheck(ostream & code); // patch
    bool isPort() const;
    bool isConstant() const;
    PortKind getPortKind(int slotNum) const;
@@ -2544,10 +2544,10 @@ private:
    /** The expression is used as an lvalue. */
    bool lvalue;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Subrange expression: a[i..j] */
@@ -2559,7 +2559,7 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    Node getType() const;
    List extract(int & tempNum);
    Node lookUp(string value, Errpos ep);
@@ -2581,10 +2581,10 @@ private:
    /** The expression is used as an lvalue. */
    bool lvalue;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Iterator statements and expressions */
@@ -2599,7 +2599,7 @@ public:
    Node getType() const;
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -2619,10 +2619,10 @@ private:
    /** Name of the containing closure. */
    string owner;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** The basic type Void. */
@@ -2631,8 +2631,8 @@ class VoidTypeNode : public BaseNode
 public:
    VoidTypeNode() : BaseNode(Errpos(), VOID_TYPE_NODE) {}
    void check(CheckData & cd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    string getCTypeString() const;
    string getEType() const;
    string getEVMTypeCode() const;
@@ -2655,8 +2655,8 @@ class BoolTypeNode : public BaseNode
 public:
    BoolTypeNode() : BaseNode(Errpos(), BOOL_TYPE_NODE) {}
    void check(CheckData & cd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    string getPortBufferName() const;
    bool isBoolType() const;
    string getCTypeString() const;
@@ -2679,7 +2679,7 @@ public:
    }
 
 // Lightning related stuff
-   int getSize() const;
+   //int getSize() const;
 };
 
 /** The basic type Byte. */
@@ -2688,8 +2688,8 @@ class ByteTypeNode : public BaseNode
 public:
    ByteTypeNode(bool unSigned = false) : BaseNode(Errpos(), BYTE_TYPE_NODE), unSigned(unSigned) {}
    void check(CheckData & cd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    string getPortBufferName() const;
    bool isNumericType() const;
    string getCTypeString() const;
@@ -2715,7 +2715,7 @@ private:
    bool unSigned;
 
 // Lightning related stuff
-   int getSize() const;
+   // int getSize() const;
 };
 
 /** The basic type Integer. */
@@ -2724,8 +2724,8 @@ class IntegerTypeNode : public BaseNode
 public:
    IntegerTypeNode(bool unSigned = false) : BaseNode(Errpos(), INTEGER_TYPE_NODE), unSigned(unSigned) {}
    void check(CheckData & cd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    string getPortBufferName() const;
    bool isNumericType() const;
    string getCTypeString() const;
@@ -2751,7 +2751,7 @@ private:
    bool unSigned;
 
 // Lightning related stuff
-   int getSize() const;
+   // int getSize() const;
 };
 
 /** The basic type Float. */
@@ -2760,8 +2760,8 @@ class FloatTypeNode : public BaseNode
 public:
    FloatTypeNode() : BaseNode(Errpos(), FLOAT_TYPE_NODE) {}
    void check(CheckData & cd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    string getPortBufferName() const;
    bool isNumericType() const;
    string getCTypeString() const;
@@ -2784,7 +2784,7 @@ public:
    }
 
 // Lightning related stuff
-   int getSize() const;
+   // int getSize() const;
 };
 
 /** The basic type Decimal. */
@@ -2793,8 +2793,8 @@ class DecimalTypeNode : public BaseNode
 public:
    DecimalTypeNode() : BaseNode(Errpos(), DECIMAL_TYPE_NODE) {}
    void check(CheckData & cd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    string getPortBufferName() const;
    bool isNumericType() const;
    string getCTypeString() const;
@@ -2817,7 +2817,7 @@ public:
    }
 
 // Lightning related stuff
-   int getSize() const;
+   // int getSize() const;
 };
 
 /** The basic type Char. */
@@ -2826,8 +2826,8 @@ class CharTypeNode : public BaseNode
 public:
    CharTypeNode() : BaseNode(Errpos(), CHAR_TYPE_NODE) {}
    void check(CheckData & cd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    string getPortBufferName() const;
    string getCTypeString() const;
    string getEType() const;
@@ -2849,7 +2849,7 @@ public:
    }
 
 // Lightning related stuff
-   int getSize() const;
+   // int getSize() const;
 };
 
 /** The basic type Text. */
@@ -2858,8 +2858,8 @@ class TextTypeNode : public BaseNode
 public:
    TextTypeNode() : BaseNode(Errpos(), TEXT_TYPE_NODE) {}
    void check(CheckData & cd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    string getPortBufferName() const;
    string getCTypeString() const;
    string getEType() const;
@@ -2883,7 +2883,7 @@ public:
    }
 
 // Lightning related stuff
-   int getSize() const;
+   // int getSize() const;
 };
 
 /** Enumerated type */
@@ -2897,7 +2897,7 @@ public:
    void genBlocks(BlockList & blocks, bool storeBlock = false);
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
-   void writeParts(ostream & code, WriteMode wm);
+   /*void writeParts(ostream & code, WriteMode wm);*/
    int getIntVal() const;
    bool isEnumType() const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -2924,7 +2924,7 @@ private:
    List values;
 
 // Lightning related stuff
-   int getSize() const;
+   // int getSize() const;
 };
 
 /** The basic type File. */
@@ -2933,8 +2933,8 @@ class FileTypeNode : public BaseNode
 public:
    FileTypeNode(FileMode mode);
    void check(CheckData & cd);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    string getPortBufferName() const;
    string getCTypeString() const;
    string getEType() const;
@@ -2953,7 +2953,7 @@ private:
    FileMode mode;
 
 // Lightning related stuff
-   int getSize() const;
+   // int getSize() const;
 };
 
 /** Enumerated value */
@@ -2990,10 +2990,10 @@ private:
    /** Block number for EVM code. */
    int evmBlockNum;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Array types. */
@@ -3035,10 +3035,10 @@ private:
    /** Expression for high bound. */
    Node hi;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Map (indexed) types. */
@@ -3072,11 +3072,11 @@ private:
    Node rangeType;
    PortKind portDir;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
-   int getSize() const;
+   void genAssem();*/
+   // int getSize() const;
 };
 
 /** Iterator for traversing maps. */
@@ -3094,10 +3094,10 @@ private:
    Node domainType;
    Node rangeType;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** The root of a function call expression.
@@ -3113,7 +3113,7 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -3142,10 +3142,10 @@ private:
      * required when the block is written. */
    Block bb;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** A defining or defined occurrence of an identifier. */
@@ -3159,8 +3159,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void writeParts(ostream & code, WriteMode wm);
-   void write(ostream & code);
+   /*void writeParts(ostream & code, WriteMode wm);*/
+   /*void write(ostream & code);*/
    void setType(Node newType);
    void setTie(Node t);
    void setPassByReference();
@@ -3253,10 +3253,10 @@ private:
      */
    int evmBlockNum;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
    int getOffset() const;
    int getTypeCode() const
    {
@@ -3282,15 +3282,15 @@ class RemoveNode : public BaseNode
 {
 public:
    RemoveNode();
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int indent = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** A node generated to send a message unconditionally. */
@@ -3302,7 +3302,7 @@ public:
    void prettyPrint(ostream & os, int indent = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
 
 private:
 
@@ -3324,10 +3324,10 @@ private:
    /** Mode for system i/o. */
    FileMode mode;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** A node generated to send a message in a select statement. */
@@ -3339,7 +3339,7 @@ public:
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
 
 private:
 
@@ -3365,10 +3365,10 @@ private:
    /** Mode for system i/o. */
    FileMode mode;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** A node generated to complete the receive operation. */
@@ -3378,7 +3378,7 @@ public:
    ReceiveNode(Errpos ep, Node lhs, Node port, Node type,
                string bufferName, bool signal = false,
                int fieldNum = 0, FileMode mode = SYS_NULL);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -3406,10 +3406,10 @@ private:
    /** Mode for system i/o. */
    FileMode mode;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** A node generated to prepare for a receive operation
@@ -3420,7 +3420,7 @@ class ReceiveOptionNode : public BaseNode
 public:
    ReceiveOptionNode(Errpos ep, Node lhs, Node port, Node type, int fieldNum,
                      string bufferName, bool signal = false);
-   void write(ostream & code);
+   /*void write(ostream & code);*/
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
    bool drawAST(ostream & os, set<int> & nodeNums, int level);
@@ -3452,10 +3452,10 @@ private:
    /** Mode for system i/o. */
    FileMode mode;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Definition of a thread. */
@@ -3471,8 +3471,8 @@ public:
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
    void getThreadParams(List & inpars, List & outpars);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    Node getType() const;
    List extract(int & tempNum);
 
@@ -3502,10 +3502,10 @@ private:
    /** Basic blocks for code. */
    BlockList blocks;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Thread parameter. */
@@ -3519,8 +3519,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    bool isConstant() const;
    bool isPort() const;
    int getVarNum() const;
@@ -3555,10 +3555,10 @@ private:
    /** Name of entity that owns this parameter. */
    string owner;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Start statement. */
@@ -3572,8 +3572,8 @@ public:
    void check(CheckData & cd);
    void gen(GenData gd);
    void genBlocks(BlockList & blocks, bool storeBlock = false);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    Node lookUp(string value, Errpos ep);
    List extract(int & tempNum);
 
@@ -3585,10 +3585,10 @@ private:
    /** Statement sequence. */
    Node seq;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Thread invocation. */
@@ -3604,8 +3604,8 @@ public:
    void genBlocks(BlockList & blocks, bool storeBlock = false);
    void startThread(BlockList & blocks);
    void stopThread(BlockList & blocks);
-   void write(ostream & code);
-   void writeParts(ostream & code, WriteMode wm);
+   /*void write(ostream & code);*/
+   /*void writeParts(ostream & code, WriteMode wm);*/
    List extract(int & tempNum);
 
 private:
@@ -3637,10 +3637,10 @@ private:
    /** First block number for outputs. */
    int outputTransfer;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Start a thread. */
@@ -3650,7 +3650,7 @@ public:
    ThreadStartNode(Errpos ep, Node name, Node chName, int numFields);
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
-   void write(ostream & code);
+   /*void write(ostream & code);*/
 
 private:
 
@@ -3663,10 +3663,10 @@ private:
    /** Number of fields for communication. */
    int numFields;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 /** Stop a thread. */
@@ -3676,7 +3676,7 @@ public:
    ThreadStopNode(Errpos ep, Node name, Node chName);
    void prettyPrint(ostream & os, int level = 0) const;
    void show(ostream & os, int level = 0) const;
-   void write(ostream & code);
+   /*void write(ostream & code);*/
 
 private:
 
@@ -3686,10 +3686,10 @@ private:
    /** Name of channel for communication with thread. */
    Node chName;
 
-// Lightning related stuff
+/*// Lightning related stuff
 public:
    void prepAssem(AssemData aData);
-   void genAssem();
+   void genAssem();*/
 };
 
 #endif

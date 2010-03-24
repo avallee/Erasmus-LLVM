@@ -3,6 +3,7 @@
 */
 
 #include <set>
+#include <cstdlib>
 
 using namespace std;
 
@@ -110,6 +111,7 @@ void drawSubTree(ostream & os, Node pn, set<int> & nodeNums, int level)
 bool BaseNode::drawAST(ostream & os, set<int> & nodeNums, int level)
 {
    os << '\n' << setw(level) << ' ';
+	/*
    if (find(nodeNums.begin(), nodeNums.end(), nodeNum) != nodeNums.end())
    {
       os << '#' << nodeNum;
@@ -123,6 +125,8 @@ bool BaseNode::drawAST(ostream & os, set<int> & nodeNums, int level)
       os << drawInt("col", ep.charPos);
       return true;
    }
+	*/
+  return false;
 }
 
 bool ProgramNode::drawAST(ostream & os, set<int> & nodeNums, int level)
@@ -517,6 +521,7 @@ bool ConstantNode::drawAST(ostream & os, set<int> & nodeNums, int level)
 bool DecNode::drawAST(ostream & os, set<int> & nodeNums, int level)
 {
    os << '\n' << setw(level) << ' ';
+	/*
    if (find(nodeNums.begin(), nodeNums.end(), nodeNum) != nodeNums.end())
       os << '#' << nodeNum;
    else
@@ -619,7 +624,8 @@ bool DecNode::drawAST(ostream & os, set<int> & nodeNums, int level)
          }
       }
       os << '\n' << setw(level) << ' ' << ')';
-   }
+   } */
+   return false;
 }
 
 bool DotNode::drawAST(ostream & os, set<int> & nodeNums, int level)

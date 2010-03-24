@@ -54,7 +54,7 @@
 #include "types.h"
 #include "utilities.h"
 
-#include "genassem.h" // Lightning
+//#include "genassem.h" // Lightning
 
 #include <iostream>
 #include <iomanip>
@@ -559,9 +559,9 @@ bool compile(string clArg)
 
          if (comRun)
          {
-            AssemData aData;
-            prog->prepAssem(aData);
-            prog->genAssem();
+            //AssemData aData;
+            //prog->prepAssem(aData);
+            //prog->genAssem();
          }
          else
          {
@@ -620,23 +620,23 @@ bool compile(string clArg)
 
             // Write declarations
             src << "// Pervasive constant declarations\n\n";
-            prog->writeParts(src, CONSTANT_DECLARATION);
+            //prog->writeParts(src, CONSTANT_DECLARATION);
 
             src << "\n// Process declarations\n\n";
-            prog->writeParts(src, CLOSURE_DECLARATION);
+            //prog->writeParts(src, CLOSURE_DECLARATION);
 
             src << "// Cell declarations\n\n";
-            prog->writeParts(src, CELL_DECLARATION);
+            //prog->writeParts(src, CELL_DECLARATION);
 
             src << "// Action bodies\n\n";
-            prog->writeParts(src, ACTION_BODIES);
+            //prog->writeParts(src, ACTION_BODIES);
 
             copyprelude(prelude, src, "B");
             if (tracing)
                src << "   int cycles = " << maxCycles << ";\n";
 
             // Create process classes
-            prog->writeParts(src, CREATE_PROCESSES);
+            //prog->writeParts(src, CREATE_PROCESSES);
 
             copyprelude(prelude, src, "C");
             if (tracing)

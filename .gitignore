@@ -1,0 +1,6 @@
+*.o
+temp*
+*.tmp
+configure.scan
+*.log
+*.bak
