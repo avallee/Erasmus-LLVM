@@ -4,3 +4,17 @@ temp*
 configure.scan
 *.log
 *.bak
+
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache
+config.status
+configure
+depcomp
+install-sh
+missing
+.deps
+src/config.*
+src/mec
+src/stamp-h1
