@@ -8,6 +8,7 @@
 #include "error.h"
 
 #include <string>
+#include <glibmm/ustring.h>
 
 using namespace std;
 
@@ -140,7 +141,7 @@ public:
    /** Default constructor constructs a dummy (useless) token.
     * All data members are public, but should only be used by scanner methods.
     */
-   Token(Errpos ep, TokenKind kind = END_MARKER, string value = "", bool keyword = false)
+   Token(Errpos ep, TokenKind kind = END_MARKER, Glib::ustring value = "", bool keyword = false)
          : ep(ep), kind(kind), value(value), keyword(keyword)
    {
    }
@@ -159,7 +160,7 @@ public:
    TokenKind kind;
 
    /** The string actually read by the scanner. */
-   string value;
+    Glib::ustring value;
 
    /** The token is a keyword. */
    bool keyword;
