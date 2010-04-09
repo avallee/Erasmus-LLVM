@@ -1,3 +1,7 @@
+AM_CFLAGS = $(DEPS_CFLAGS)
+AM_CXXFLAGS = $(DEPS_CFLAGS)
+LIBS = $(DEPS_LIBS)
+
 bin_PROGRAMS= mec
 mec_SOURCES = ast.cpp ast.h \
 basicblocks.cpp basicblocks.h \
