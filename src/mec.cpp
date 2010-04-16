@@ -62,6 +62,8 @@
 #include <sstream>
 #include <list>
 #include <map>
+
+#include <glibmm.h>
 //#include <sys/io.h> // patch (not needed)
 
 using namespace std;
@@ -674,6 +676,8 @@ bool compile(string clArg)
 
 int main(int argc, char *argv[])
 {
+    Glib::init();
+
     cerr << "MEC (" << today() << ").\n\n";
 
     buildFuncDefs(funcDefs);
