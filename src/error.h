@@ -16,44 +16,44 @@ using namespace std;
 /** An instance records the position of a character in the source text. */
 struct Errpos
 {
-   /** Construct a position object for reporting an error.
-    * \param pLine points to the source code line.
-    * \param lineNum is the number of the source code line.
-    * \param charPos is the position of the character on the line.
-    */
-   Errpos(char* pLine = 0, int lineNum = 0, int charPos = 0)
-         : pLine(pLine), lineNum(lineNum), charPos(charPos)
-   {}
+    /** Construct a position object for reporting an error.
+     * \param pLine points to the source code line.
+     * \param lineNum is the number of the source code line.
+     * \param charPos is the position of the character on the line.
+     */
+    Errpos(char* pLine = 0, int lineNum = 0, int charPos = 0)
+        : pLine(pLine), lineNum(lineNum), charPos(charPos)
+    {}
 
-   /** The destructor doesn't do anything special. */
-   ~Errpos()
-   {
-      // pLine should not be deleted when a position object is deleted.
-   }
+    /** The destructor doesn't do anything special. */
+    ~Errpos()
+    {
+        // pLine should not be deleted when a position object is deleted.
+    }
 
-   /** Write an error position, displaying the whole line and a caret. */
-   friend ostream & operator<<(ostream & os, const Errpos & ep)
-   {
-      if (ep.pLine)
-      {
-         os << '\n' << setw(4) << ep.lineNum << ": " << ep.pLine << "\n      ";
-         for (int i = 0; i < ep.charPos; ++i)
-            os << ' ';
-         os << "^\n";
-      }
-      else
-         os << endl;
-      return os;
-   }
+    /** Write an error position, displaying the whole line and a caret. */
+    friend ostream & operator<<(ostream & os, const Errpos & ep)
+    {
+        if (ep.pLine)
+        {
+            os << '\n' << setw(4) << ep.lineNum << ": " << ep.pLine << "\n      ";
+            for (int i = 0; i < ep.charPos; ++i)
+                os << ' ';
+            os << "^\n";
+        }
+        else
+            os << endl;
+        return os;
+    }
 
-   /** Pointer to source line. */
-   char *pLine;
+    /** Pointer to source line. */
+    char *pLine;
 
-   /** Number of source line. */
-   int lineNum;
+    /** Number of source line. */
+    int lineNum;
 
-   /** Position of character in source line. */
-   int charPos;
+    /** Position of character in source line. */
+    int charPos;
 };
 
 /** An instance is used to determine how an error is handled.
@@ -61,22 +61,22 @@ struct Errpos
  */
 class ErrorReporter
 {
-public:
+    public:
 
-   /** Reporting modes. */
-   enum REP_KIND { REPORT_ERROR, THROW_ERROR };
+        /** Reporting modes. */
+        enum REP_KIND { REPORT_ERROR, THROW_ERROR };
 
-   /** Construct an instance with a particular kind. */
-   ErrorReporter(REP_KIND kind) : kind(kind) {}
+        /** Construct an instance with a particular kind. */
+        ErrorReporter(REP_KIND kind) : kind(kind) {}
 
-   /** Compare two instances using their kinds as the criterion for equality. */
-   bool operator==(const ErrorReporter & other) const
-   {
-      return kind == other.kind;
-   }
-private:
+        /** Compare two instances using their kinds as the criterion for equality. */
+        bool operator==(const ErrorReporter & other) const
+        {
+            return kind == other.kind;
+        }
+    private:
 
-   REP_KIND kind;
+        REP_KIND kind;
 };
 
 /** The object used to indicate that an error should be reported. */
@@ -94,21 +94,21 @@ const ErrorReporter THROW = ErrorReporter(ErrorReporter::THROW_ERROR);
  */
 class Error
 {
-public:
+    public:
 
-   /** Write an error component of any type. */
-   template<typename T> Error & operator<<(const T & t)
-   {
-      os << t;
-      return *this;
-   }
+        /** Write an error component of any type. */
+        template<typename T> Error & operator<<(const T & t)
+        {
+            os << t;
+            return *this;
+        }
 
-   /** Report or throw an error. */
-   Error & operator<<(const ErrorReporter & rep);
+        /** Report or throw an error. */
+        Error & operator<<(const ErrorReporter & rep);
 
-private:
+    private:
 
-   ostringstream os;
+        ostringstream os;
 };
 
 /** \return the number of errors found. */

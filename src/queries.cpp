@@ -8,435 +8,435 @@
 
 bool BaseNode::isBoolType() const
 {
-   return false;
+    return false;
 }
 
 bool BoolTypeNode::isBoolType() const
 {
-   return true;
+    return true;
 }
 
 //-------------------------------------------------------- isArrayType
 
 bool BaseNode::isArrayType() const
 {
-   return false;
+    return false;
 }
 
 bool DefNode::isArrayType() const
 {
-   return value->isArrayType();
+    return value->isArrayType();
 }
 
 bool ArrayTypeNode::isArrayType() const
 {
-   return true;
+    return true;
 }
 
 bool NameNode::isArrayType() const
 {
-   return definition && definition->isArrayType();
+    return definition && definition->isArrayType();
 }
 //-------------------------------------------------------- isMapType
 
 bool BaseNode::isMapType() const
 {
-   return false;
+    return false;
 }
 
 bool DefNode::isMapType() const
 {
-   return value->isMapType();
+    return value->isMapType();
 }
 
 bool MapTypeNode::isMapType() const
 {
-   return true;
+    return true;
 }
 
 bool NameNode::isMapType() const
 {
-   return definition && definition->isMapType();
+    return definition && definition->isMapType();
 }
 
 //-------------------------------------------------------- isEnumType
 
 bool BaseNode::isEnumType() const
 {
-   return false;
+    return false;
 }
 
 bool DefNode::isEnumType() const
 {
-   return value->isEnumType();
+    return value->isEnumType();
 }
 
 bool EnumTypeNode::isEnumType() const
 {
-   return true;
+    return true;
 }
 
 bool NameNode::isEnumType() const
 {
-   return definition ? definition->isEnumType() : false;
+    return definition ? definition->isEnumType() : false;
 }
 
 //-------------------------------------------------------- isIterType
 
 bool BaseNode::isIterType() const
 {
-   return false;
+    return false;
 }
 
 bool IterTypeNode::isIterType() const
 {
-   return true;
+    return true;
 }
 
 //-------------------------------------------------------- isNumericType
 
 bool BaseNode::isNumericType() const
 {
-   return false;
+    return false;
 }
 
 bool ByteTypeNode::isNumericType() const
 {
-   return false;
+    return false;
 }
 
 bool IntegerTypeNode::isNumericType() const
 {
-   return true;
+    return true;
 }
 
 bool FloatTypeNode::isNumericType() const
 {
-   return true;
+    return true;
 }
 
 bool DecimalTypeNode::isNumericType() const
 {
-   return true;
+    return true;
 }
 
 //-------------------------------------------------------- isEmpty
 
 bool BaseNode::isEmpty() const
 {
-   return false;
+    return false;
 }
 
 bool SequenceNode::isEmpty() const
 {
-   return stmts.size() == 0;
+    return stmts.size() == 0;
 }
 
 //-------------------------------------------------------- isReply
 
 bool BaseNode::isReply() const
 {
-   return false;
+    return false;
 }
 
 bool DecNode::isReply() const
 {
-   return mk == REPLY;
+    return mk == REPLY;
 }
 
 bool NameNode::isReply() const
 {
-   return definition->isReply();
+    return definition->isReply();
 }
 
 //-------------------------------------------------------- isReference
 
 bool BaseNode::isReference() const
 {
-   return false;
+    return false;
 }
 
 bool DecNode::isReference() const
 {
-   return reference;
+    return reference;
 }
 
 bool NameNode::isReference() const
 {
-   return definition ? definition->isReference() : false;
+    return definition ? definition->isReference() : false;
 }
 
 //-------------------------------------------------------- checkSysIO
 
 FileMode BaseNode::checkSysIO() const
 {
-   return SYS_NULL;
+    return SYS_NULL;
 }
 
 FileMode DotNode::checkSysIO() const
 {
-   if (port->getNameString() == BASIO_SYS)
-   {
-      string fieldName = field->getNameString();
-      if (fieldName == BASIO_INP)
-         return SYS_IN;
-      else if (fieldName == BASIO_OUT)
-         return SYS_OUT;
-      else if (fieldName == BASIO_ERR)
-         return SYS_ERR;
-      else
-         return SYS_NULL;
-   }
-   else
-      return SYS_NULL;
+    if (port->getNameString() == BASIO_SYS)
+    {
+        string fieldName = field->getNameString();
+        if (fieldName == BASIO_INP)
+            return SYS_IN;
+        else if (fieldName == BASIO_OUT)
+            return SYS_OUT;
+        else if (fieldName == BASIO_ERR)
+            return SYS_ERR;
+        else
+            return SYS_NULL;
+    }
+    else
+        return SYS_NULL;
 }
 
 FileMode QueryNode::checkSysIO() const
 {
-   if (port->getNameString() == BASIO_SYS)
-   {
-      string fieldName = field->getNameString();
-      if (fieldName == BASIO_INP)
-         return SYS_IN;
-      else if (fieldName == BASIO_OUT)
-         return SYS_OUT;
-      else if (fieldName == BASIO_ERR)
-         return SYS_ERR;
-      else
-         return SYS_NULL;
-   }
-   else
-      return SYS_NULL;
+    if (port->getNameString() == BASIO_SYS)
+    {
+        string fieldName = field->getNameString();
+        if (fieldName == BASIO_INP)
+            return SYS_IN;
+        else if (fieldName == BASIO_OUT)
+            return SYS_OUT;
+        else if (fieldName == BASIO_ERR)
+            return SYS_ERR;
+        else
+            return SYS_NULL;
+    }
+    else
+        return SYS_NULL;
 }
 
 //-------------------------------------------------------- isMap
 
 bool BaseNode::isMap() const
 {
-   return false;
+    return false;
 }
 
 bool DefNode::isMap() const
 {
-   return value->isMap();
+    return value->isMap();
 }
 
 bool NameNode::isMap() const
 {
-   return definition && definition->isMap();
+    return definition && definition->isMap();
 }
 
 bool MapTypeNode::isMap() const
 {
-   return true;
+    return true;
 }
 
 bool DecNode::isMap() const
 {
-   return type && type->isMap();
+    return type && type->isMap();
 }
 
 //-------------------------------------------------------- isPort
 
 bool BaseNode::isPort() const
 {
-   return false;
+    return false;
 }
 
 bool DefNode::isPort() const
 {
-   return value->isPort();
+    return value->isPort();
 }
 
 bool DecNode::isPort() const
 {
-   return type ? type->isPort() : false;
+    return type ? type->isPort() : false;
 }
 
 bool ProtocolNode::isPort() const
 {
-   return true;
+    return true;
 }
 
 bool SubscriptNode::isPort() const
 {
-   return base->isPort();
+    return base->isPort();
 }
 
 bool MapTypeNode::isPort() const
 {
-   return rangeType->isPort();
+    return rangeType->isPort();
 }
 
 bool NameNode::isPort() const
 {
-   return definition && definition->isPort();
+    return definition && definition->isPort();
 }
 
 bool ThreadParamNode::isPort() const
 {
-   return type->isPort();
+    return type->isPort();
 }
 
 //-------------------------------------------------------- isConstant
 
 bool BaseNode::isConstant() const
 {
-   emergencyStop("isConstant", ep);
-   return false;
+    emergencyStop("isConstant", ep);
+    return false;
 }
 
 bool DefNode::isConstant() const
 {
-   Error() << "Name used in invalid context." << name->getPos() << REPORT;
-   return false;
+    Error() << "Name used in invalid context." << name->getPos() << REPORT;
+    return false;
 }
 
 bool ConstantNode::isConstant() const
 {
-   return true;
+    return true;
 }
 
 bool DecNode::isConstant() const
 {
-   return constant;
+    return constant;
 }
 
 bool DotNode::isConstant() const
 {
-   return false;
+    return false;
 }
 
 bool QueryNode::isConstant() const
 {
-   return false;
+    return false;
 }
 
 bool ComprehensionNode::isConstant() const
 {
-   return false;
+    return false;
 }
 
 bool SubscriptNode::isConstant() const
 {
-   return false;
+    return false;
 }
 
 bool ThreadParamNode::isConstant() const
 {
-   return false;
+    return false;
 }
 
 bool NameNode::isConstant() const
 {
-   return definition && definition->isConstant();
+    return definition && definition->isConstant();
 }
 
 //-------------------------------------------------------- assignable
 
 bool BaseNode::assignable() const
 {
-   return true;
+    return true;
 }
 
 bool ComprehensionNode::assignable() const
 {
-   return collection->assignable();
+    return collection->assignable();
 }
 
 bool MapSetNode::assignable() const
 {
-   return setKind == MAPSET_RANGE;
+    return setKind == MAPSET_RANGE;
 }
 
 bool RangeNode::assignable() const
 {
-   return false;
+    return false;
 }
 
 bool EnumSetNode::assignable() const
 {
-   return false;
+    return false;
 }
 
 bool NameNode::assignable() const
 {
-   return definition ? definition->assignable() : true;
+    return definition ? definition->assignable() : true;
 }
 
 //-------------------------------------------------------- isPervasive
 
 bool BaseNode::isPervasive() const
 {
-   return false;
+    return false;
 }
 
 bool ConstantNode::isPervasive() const
 {
-   return true;
+    return true;
 }
 
 bool NameNode::isPervasive() const
 {
-   return definition && definition->isPervasive();
+    return definition && definition->isPervasive();
 }
 
 //-------------------------------------------------------- isEnumVal
 
 bool BaseNode::isEnumVal() const
 {
-   emergencyStop("isEnumVal", ep);
-   return false;
+    emergencyStop("isEnumVal", ep);
+    return false;
 }
 
 bool DecNode::isEnumVal() const
 {
-   return type &&  type->isEnumVal();
+    return type &&  type->isEnumVal();
 }
 
 bool NameNode::isEnumVal() const
 {
-   return definition && (definition->kind() == ENUM_VALUE_NODE);
+    return definition && (definition->kind() == ENUM_VALUE_NODE);
 }
 
 //-------------------------------------------------------- isIterator
 
 bool BaseNode::isIterator() const
 {
-   return false;
+    return false;
 }
 
 bool ComprehensionNode::isIterator() const
 {
-   return collection->isIterator();
+    return collection->isIterator();
 }
 
 bool MapSetNode::isIterator() const
 {
-   return true;
+    return true;
 }
 
 bool NameNode::isIterator() const
 {
-   return definition && definition->isIterator();
+    return definition && definition->isIterator();
 }
 
 //-------------------------------------------------------- isAlias
 
 bool BaseNode::isAlias() const
 {
-   return false;
+    return false;
 }
 
 bool DecNode::isAlias() const
 {
-   return alias;
+    return alias;
 }
 
 bool NameNode::isAlias() const
 {
-   return definition ? definition->isAlias() : false;
-//   return passByReference;             changed 081206
+    return definition ? definition->isAlias() : false;
+    //   return passByReference;             changed 081206
 }
 
 
@@ -444,12 +444,12 @@ bool NameNode::isAlias() const
 
 bool BaseNode::isPassByReference() const
 {
-   return false;
+    return false;
 }
 
 bool NameNode::isPassByReference() const
 {
-   return passByReference;
+    return passByReference;
 }
 
 /** \todo Check whether both of these functions are necessary. */

@@ -21,31 +21,31 @@ using namespace std;
  */
 class Scanner
 {
-public:
+    public:
 
-   /** Construct an initialized scanner. */
-   Scanner();
+        /** Construct an initialized scanner. */
+        Scanner();
 
-   /** Delete scanner and source text. */
-   ~Scanner();
+        /** Delete scanner and source text. */
+        ~Scanner();
 
-   /** Scan a file.
-    * \param filename is the full name/path of the input file.
-    * \param tokens is a list of tokens to which the scanner
-             will append all tokens read from the file.
-    * \throw an instance of class OldStyleError giving the position
-    *        of the error in the source file and a diagnostic.
-    */
-   void scanFile(string filename, list<Token> & tokens);
+        /** Scan a file.
+         * \param filename is the full name/path of the input file.
+         * \param tokens is a list of tokens to which the scanner
+         will append all tokens read from the file.
+         * \throw an instance of class OldStyleError giving the position
+         *        of the error in the source file and a diagnostic.
+         */
+        void scanFile(string filename, list<Token> & tokens);
 
-private:
+    private:
 
-   /** A map giving the kind of token corresponding to each keyword string. */
-   map<string, TokenKind> keywords;
+        /** A map giving the kind of token corresponding to each keyword string. */
+        map<string, TokenKind> keywords;
 
-   /** The source text of the file.
-       Each element points to a line of source code.*/
-   vector<char*> source;
+        /** The source text of the file.
+          Each element points to a line of source code.*/
+        vector<char*> source;
 
 };
 

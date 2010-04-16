@@ -4,8 +4,8 @@
 #define UTILITIES_H
 
 /** Yucch!  Macros!  These are used in write.cpp and basicblocks.cpp
-  * to format the output code.
-  */
+ * to format the output code.
+ */
 
 #define TAB0 code
 #define TAB1 code << "   "

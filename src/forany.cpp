@@ -16,57 +16,57 @@
 
 Node BaseNode::makeInit(Node, Node)
 {
-   emergencyStop("makeInit", ep);
+    emergencyStop("makeInit", ep);
 }
 
 Node ComprehensionNode::makeInit(Node, Node) // Arguments ignored
 {
-   return collection->makeInit(var, iter);
+    return collection->makeInit(var, iter);
 }
 
 Node RangeNode::makeInit(Node var, Node) // Second argument ignored
 {
-   return new RangeInitNode(ep, owner, type, var, start,
-                            finish, step, finishNum, stepNum);
+    return new RangeInitNode(ep, owner, type, var, start,
+                             finish, step, finishNum, stepNum);
 }
 
 Node MapSetNode::makeInit(Node var, Node loopIter)
 {
-   iter = loopIter;
-   return new MapInitNode(ep, owner, type, var, loopIter, mapKind, setKind, map, indexName);
+    iter = loopIter;
+    return new MapInitNode(ep, owner, type, var, loopIter, mapKind, setKind, map, indexName);
 }
 
 Node EnumSetNode::makeInit(Node var, Node)
 {
-   return new EnumInitNode(ep, owner, var);
+    return new EnumInitNode(ep, owner, var);
 }
 
 //------------------------------------------------------------------makeTermTest
 
 Node BaseNode::makeTermTest(Block, Node, Node)
 {
-   emergencyStop("makeTermTest", ep);
+    emergencyStop("makeTermTest", ep);
 }
 
 Node ComprehensionNode::makeTermTest(Block bb, Node, Node) // Two arguments ignored
 {
-   return collection->makeTermTest(bb, var, iter);
+    return collection->makeTermTest(bb, var, iter);
 }
 
 Node RangeNode::makeTermTest(Block bb, Node var, Node) // One argument ignored
 {
-   return new RangeTermNode(ep, owner, bb, type, var, step, stepNum,
-   finish, finishNum, open, ascending);
+    return new RangeTermNode(ep, owner, bb, type, var, step, stepNum,
+                             finish, finishNum, open, ascending);
 }
 
 Node MapSetNode::makeTermTest(Block bb, Node var, Node iter)
 {
-   return new MapTermNode(ep, owner, bb, type, var, iter, mapKind, setKind, map, indexName);
+    return new MapTermNode(ep, owner, bb, type, var, iter, mapKind, setKind, map, indexName);
 }
 
 Node EnumSetNode::makeTermTest(Block bb, Node var, Node)
 {
-   return new EnumTermNode(ep, owner, bb, var, max);
+    return new EnumTermNode(ep, owner, bb, var, max);
 }
 
 
@@ -75,27 +75,27 @@ Node EnumSetNode::makeTermTest(Block bb, Node var, Node)
 
 Node BaseNode::makeStep(Node, Node)
 {
-   emergencyStop("makeStep", ep);
+    emergencyStop("makeStep", ep);
 }
 
 Node ComprehensionNode::makeStep(Node, Node)
 {
-   return collection->makeStep(var, iter);
+    return collection->makeStep(var, iter);
 }
 
 Node RangeNode::makeStep(Node var, Node)
 {
-   return new RangeStepNode(ep, owner, type, var, step, stepNum, ascending);
+    return new RangeStepNode(ep, owner, type, var, step, stepNum, ascending);
 }
 
 Node MapSetNode::makeStep(Node var, Node iter)
 {
-   return new MapStepNode(ep, owner, type, var, iter, mapKind, setKind, map, indexName);
+    return new MapStepNode(ep, owner, type, var, iter, mapKind, setKind, map, indexName);
 }
 
 Node EnumSetNode::makeStep(Node var, Node)
 {
-   return new EnumStepNode(ep, owner, var);
+    return new EnumStepNode(ep, owner, var);
 }
 
 
@@ -104,12 +104,12 @@ Node EnumSetNode::makeStep(Node var, Node)
 
 Node BaseNode::makeMatchTest(Block)
 {
-   emergencyStop("makeMatchtest", ep);
+    emergencyStop("makeMatchtest", ep);
 }
 
 Node ComprehensionNode::makeMatchTest(Block bb)
 {
-   return new MatchNode(ep, bb, pred);
+    return new MatchNode(ep, bb, pred);
 }
 
 
