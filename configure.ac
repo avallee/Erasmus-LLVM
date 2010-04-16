@@ -7,6 +7,8 @@ AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 AC_CONFIG_SRCDIR([src/mec.cpp])
 AC_CONFIG_HEADERS([src/config.h])
 
+m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES])
+
 # Checks for programs.
 AC_PROG_CXX([llvm-g++ g++])
 AC_PROG_CC([llvm-gcc gcc])
