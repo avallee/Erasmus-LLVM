@@ -100,7 +100,7 @@ extern FuncDef *funIntegerEnum;
 
 void buildFuncDefs(vector<FuncDef*> & funcDefs);
 
-void showFuncDefs(char *coerceFileName, char *funFileName, vector<FuncDef*> fds);
+void showFuncDefs(const char *coerceFileName, const char *funFileName, vector<FuncDef*> fds);
 
 #endif
 
