@@ -17,8 +17,14 @@ AC_DEFINE([DIRECTORY_SEPARATOR], ['/'], [Character representing the separation b
 
 
 # Checks for programs.
-AC_PROG_CXX([llvm-g++ g++])
-AC_PROG_CC([llvm-gcc gcc])
+AC_PROG_CXX
+AC_PROG_CC
+#AC_PROG_CXX([llvm-g++ g++])
+#AC_PROG_CC([llvm-gcc gcc])
+
+# Check for doxygen program.
+# AC_PROG_TRY_DOXYGEN
+# AM_CONDITIONAL([HAVE_DOXYGEN],[test -n "$DOXYGEN"])
 
 # Checks for libraries.
 AC_LANG([C++])
