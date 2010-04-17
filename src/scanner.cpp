@@ -172,8 +172,7 @@ void Scanner::scanFile(string filename, list<Token> & tokens)
 
    while (ifs.getline(buffer, BUFSIZE))
    {
-       // Big memory leak here?
-       char* pc = new char[strlen(buffer) + 1];
+      char* pc = new char[strlen(buffer) + 1];
       strcpy(pc, buffer);
       source.push_back(pc);
    }

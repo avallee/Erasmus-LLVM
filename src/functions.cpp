@@ -61,7 +61,7 @@ ostream & operator<<(ostream & os, FuncDef* pfd)
 }
 
 /** Write descriptions of all functions to the given output stream. */
-void showFuncDefs(char *coerceFileName, char *funFileName, vector<FuncDef*> fds)
+void showFuncDefs(const char *coerceFileName, const char *funFileName, vector<FuncDef*> fds)
 {
    ofstream cos(coerceFileName);
    cos << "\\begin{eqnarray*}\n";

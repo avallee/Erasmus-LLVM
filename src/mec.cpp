@@ -53,6 +53,7 @@
 #include "scanner.h"
 #include "types.h"
 #include "utilities.h"
+#include "llvmgen.h"
 
 //#include "genassem.h" // Lightning
 
@@ -62,9 +63,10 @@
 #include <sstream>
 #include <list>
 #include <map>
+
 //#include <sys/io.h> // patch (not needed)
 
-using namespace std;
+
 
 /** Expected version of prelude.cpp.
  *  This is a digit string that should be a substring of the first line
@@ -101,7 +103,7 @@ bool logGen = false;
 /** Compiler option "R": compile and run.
  *  If this is enabled, no C++ code is generated.
  */
-bool comRun = true;
+bool comRun = false;
 
 /** Compiler option  "T": Trace execution */
 bool tracing = false;
@@ -114,6 +116,9 @@ string outfilename = "";
 
 /** Compiler option  "W": show warning messages. */
 bool showWarnings = false;
+
+/** Compiler option  "Z": generate LLVM bitcode. */
+bool genLLVM = false;
 
 /** Default path to 'prelude.cpp'. */
 string preludeFileName = "prelude.cpp";
@@ -272,7 +277,7 @@ void readFiles(string root, int & tfnum, vector<string> & filenames, ostream & l
          oss << "temp_" << ++tfnum << ".e";
          string tempfn = oss.str();
          ofstream ofs(tempfn.c_str());
-         cout << "Extracting '" << tfn << "' -> '" << tempfn << "'\n";
+         std::cout << "Extracting '" << tfn << "' -> '" << tempfn << "'\n";
          extract(tfs, ofs);
          tfs.close();
          ofs.close();
@@ -298,7 +303,7 @@ bool compile(string clArg)
    {
       if (clArg.size() < 2)
       {
-         cerr << "Unknown option '" << clArg << "'.\n";
+         std::cerr << "Unknown option '" << clArg << "'.\n";
          return false;
       }
       switch (clArg[1])
@@ -406,7 +411,7 @@ bool compile(string clArg)
                         maxCycles = 10 * maxCycles + c - '0';
                      else
                      {
-                        cerr << "Unknown option '" << clArg << "'.\n";
+                        std::cerr << "Unknown option '" << clArg << "'.\n";
                         return false;
                      }
                   }
@@ -421,16 +426,23 @@ bool compile(string clArg)
          case 'W':
             showWarnings = clArg[0] == '+';
             break;
+	
+
+	   // Generate LLVM Bit Code
+         case 'z':
+         case 'Z':
+            genLLVM = clArg[0] == '+';
+            break;
 
          default:
-            cerr << "Unknown option '" << clArg << "'.\n";
+            std::cerr << "Unknown option '" << clArg << "'.\n";
             return false;
       }
 
       if (showFuncs)
       {
          showFuncDefs("coercions.tex", "functions.tex", funcDefs);
-         cerr << "Function tables written.\n";
+         std::cerr << "Function tables written.\n";
       }
       return true;
    }
@@ -452,7 +464,7 @@ bool compile(string clArg)
       else
          root = clArg;
 
-      cerr << "Root = " << root << endl;
+      std::cerr << "Root = " << root << endl;
 
       string codefilename   = root + ".cpp";
       if (outfilename != "")
@@ -474,7 +486,7 @@ bool compile(string clArg)
             it != filenames.end();
             ++it)
       {
-         cout << "Compiling   '" << *it << "'\n";
+         std::cout << "Compiling   '" << *it << "'\n";
          sc.scanFile(*it, tokens);
       }
       tokens.push_back(Token(Errpos(), END_OF_FILE, "EOF"));
@@ -548,7 +560,7 @@ bool compile(string clArg)
 
       int numErrors = errorCount();
       if (numErrors > 0)
-         cout << numErrors << " errors!  No code generated.\n";
+         std::cout << numErrors << " errors!  No code generated.\n";
       else
       {
          // Phase 5: decorate the AST with the information needed for
@@ -590,12 +602,12 @@ bool compile(string clArg)
             string version = firstLine.substr(b, e - b);
             if (version != PRELUDE_VERSION)
             {
-               cerr << "Incompatibility:\n";
-               cerr << "    Compiler version is    " << PRELUDE_VERSION << ".\n";
-               cerr << "    " << preludeFileName << " version is " << version << ".\n";
+               std::cerr << "Incompatibility:\n";
+               std::cerr << "    Compiler version is    " << PRELUDE_VERSION << ".\n";
+               std::cerr << "    " << preludeFileName << " version is " << version << ".\n";
                Error() << "Versions are incompatible." << THROW;
             }
-            cout << "Reading '" << preludeFileName << "' version " << version << ".\n";
+            std::cout << "Reading '" << preludeFileName << "' version " << version << ".\n";
 
             // Open output file
             ofstream src(codefilename.c_str());
@@ -607,7 +619,7 @@ bool compile(string clArg)
                ifstream is(it->c_str());
                if (!is)
                   Error() << "Failed to open '" << *it << "'\n" << THROW;
-               cerr << "Copying '" << *it << "'\n";
+               std::cerr << "Copying '" << *it << "'\n";
                src << "// Function definitions from '" << *it << "'\n";
                while (is)
                {
@@ -658,29 +670,56 @@ bool compile(string clArg)
             prog->drawAST(ast, nodeNums, 0);
             ast << endl;
             ast.close();
-            cerr << "AST written to " << astfilename << ".\n";
+            std::cerr << "AST written to " << astfilename << ".\n";
          }
 
-         cout << "Done!\n";
+
+	// Generate LLVM
+         if (genLLVM)
+         {
+            // Phase 6: convert the tree-structured program (in the AST)
+            // to a linear list of (not really) basic blocks.
+            BlockList blocks;
+            prog->genBlocks(blocks);
+            if (showBasicBlocks)
+            {
+               log << "\nBasic Blocks\n";
+               prog->showBB(log);
+            }
+
+            prog->genLLVM();
+	     std::cerr << "LLVM Generated " << ".\n";
+         }
+
+
+         std::cout << "Done!\n";
       }
    }
    catch (const string & msg)
    {
-      cerr << msg << "\nCompilation terminated.\n";
+      std::cerr << msg << "\nCompilation terminated.\n";
       return false;
    }
    return errorCount() == 0;
 }
 
+
 int main(int argc, char *argv[])
 {
-   cerr << "MEC (" << today() << ").\n\n";
+
+  InitializeNativeTarget();
+  LLVMContext &Context = getGlobalContext();
+
+  // Make the module, which holds all the code.
+  TheModule = new Module("main", Context);
+
+   std::cerr << "MEC (" << today() << ").\n\n";
 
    buildFuncDefs(funcDefs);
 
    if (argc <= 1)
    {
-      cerr <<
+      std::cerr <<
       "Usage:\n"
       "   mec <options> <file name>\n\n"
       "Option = ( '+' | '-' ) <letter> <parameter>\n\n"
@@ -702,24 +741,25 @@ int main(int argc, char *argv[])
       "      T    Trace execution until program terminates\n"
       "      Tn   Trace execution for n context switches\n"
       "      W    Show warnings about incompatible protocols\n"
+      "      Z    Generate LLVM Code\n"
       "   -------------------------------------------------------------\n"
       " Default settings: ";
-      cerr << (drawAST         ? "+A"   : "-A")  << ' ';
-      cerr << (showBasicBlocks ? "+B"   : "-B")  << ' ';
-      cerr << (showFuncs       ? "+F"   : "-F")  << ' ';
-      cerr << (logParse        ? "+LP" : "-LP")  << ' ';
-      cerr << (logExtract      ? "+LE" : "-LE")  << ' ';
-      cerr << (logBind         ? "+LB" : "-LB")  << ' ';
-      cerr << (logCheck        ? "+LC" : "-LC")  << ' ';
-      cerr << (logGen          ? "+LG" : "-LG")  << ' ';
-      cerr << "+P" << preludeFileName            << ' ';
-      cerr << (comRun          ? "+R"   : "-R")  << ' ';
-      cerr << (tracing         ? "+T"   : "-T")  << ' ';
-      cerr << (showWarnings    ? "+W"   : "-W")  << ' ';
-      cerr << endl;
-      return 0;
+      std::cerr << (drawAST         ? "+A"   : "-A")  << ' ';
+      std::cerr << (showBasicBlocks ? "+B"   : "-B")  << ' ';
+      std::cerr << (showFuncs       ? "+F"   : "-F")  << ' ';
+      std::cerr << (logParse        ? "+LP" : "-LP")  << ' ';
+      std::cerr << (logExtract      ? "+LE" : "-LE")  << ' ';
+      std::cerr << (logBind         ? "+LB" : "-LB")  << ' ';
+      std::cerr << (logCheck        ? "+LC" : "-LC")  << ' ';
+      std::cerr << (logGen          ? "+LG" : "-LG")  << ' ';
+      std::cerr << "+P" << preludeFileName            << ' ';
+      std::cerr << (comRun          ? "+R"   : "-R")  << ' ';
+      std::cerr << (tracing         ? "+T"   : "-T")  << ' ';
+      std::cerr << (showWarnings    ? "+W"   : "-W")  << ' ';
+      std::cerr << (genLLVM    	    ? "+Z"   : "-Z")  << ' ';
+      std::cerr << endl;
    }
-
+   
    bool success;
    for (int a = 1; a != argc; ++a)
    {
@@ -727,7 +767,47 @@ int main(int argc, char *argv[])
       if (!success)
          return 1;
    }
-   return 0;
-}
 
+
+   // Create the JIT.
+  TheExecutionEngine = EngineBuilder(TheModule).create();
+
+  {
+    ExistingModuleProvider OurModuleProvider(TheModule);
+    FunctionPassManager OurFPM(&OurModuleProvider);
+      
+    // Set up the optimizer pipeline.  Start with registering info about how the
+    // target lays out data structures.
+    OurFPM.add(new TargetData(*TheExecutionEngine->getTargetData()));
+    // Promote allocas to registers.
+    OurFPM.add(createPromoteMemoryToRegisterPass());
+    // Do simple "peephole" optimizations and bit-twiddling optzns.
+    OurFPM.add(createInstructionCombiningPass());
+    // Reassociate expressions.
+    OurFPM.add(createReassociatePass());
+    // Eliminate Common SubExpressions.
+    OurFPM.add(createGVNPass());
+    // Simplify the control flow graph (deleting unreachable blocks, etc).
+    OurFPM.add(createCFGSimplificationPass());
+
+    OurFPM.doInitialization();
+
+    // Set the global so the code gen can use this.
+    TheFPM = &OurFPM;
+
+    // Run the main "interpreter loop" now.
+    MainLoop();
+    
+    TheFPM = 0;
+    
+    // Print out all of the generated code.
+    TheModule->dump();
+    
+  }  // Free module provider (and thus the module) and pass manager.
+
+
+
+   return 0;
+  
+}
 

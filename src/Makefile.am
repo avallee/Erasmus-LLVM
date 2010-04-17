@@ -3,7 +3,8 @@ AM_CXXFLAGS = $(DEPS_CFLAGS)
 LIBS = $(DEPS_LIBS)
 
 bin_PROGRAMS= mec
-mec_SOURCES = ast.cpp ast.h \
+mec_SOURCES = \
+ast.cpp ast.h \
 basicblocks.cpp basicblocks.h \
 bind.cpp \
 build.cpp \
@@ -16,17 +17,18 @@ forany.cpp \
 functions.cpp functions.h \
 gen.cpp \
 getters.cpp \
+llvmgen.cpp llvmgen.h \
 lookup.cpp \
 lts.cpp lts.h \
 mec.cpp \
-parser.cpp parser.h \
+parser.cpp \
+parser.h \
 prettyprint.cpp \
 queries.cpp \
-scanner.cpp scanner.h \
-setters.cpp \
+scanner.cpp \
+scanner.h setters.cpp \
 show.cpp \
 token.h \
 typecodes.h \
 types.h \
 utilities.cpp utilities.h
-
