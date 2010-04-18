@@ -10,12 +10,11 @@ AC_CONFIG_HEADERS([src/config.h])
 # Checks for programs.
 AC_PROG_CXX([llvm-g++ g++])
 AC_PROG_CC([llvm-gcc gcc])
+AX_USE_LLVM
 
 # Checks for libraries.
 AC_LANG([C++])
 PKG_CHECK_MODULES([DEPS], [glib-2.0 glibmm-2.4])
-AC_SUBST([DEPS_CFLAGS])
-AC_SUBST([DEPS_LIBS])
 
 # Checks for header files.
 

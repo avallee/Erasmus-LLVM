@@ -60,7 +60,7 @@ m4_define([_LLVM_CONFIG],
         [llvm_failed=untried])
 ])#_LLVM_CONFIG
 
-# USE_LLVM([COMPONENT], [ACTION-IF-FOUND],
+# AX_USE_LLVM([COMPONENT], [ACTION-IF-FOUND],
 # [ACTION-IF-NOT-FOUND])
 # -----------------------------------------------
 AC_DEFUN([AX_USE_LLVM], [

@@ -1,9 +1,11 @@
-AM_CFLAGS = $(DEPS_CFLAGS)
-AM_CXXFLAGS = $(DEPS_CFLAGS)
-LIBS = $(DEPS_LIBS)
+AM_CFLAGS = $(DEPS_CFLAGS) $(LLVM_CFLAGS)
+AM_CXXFLAGS = $(DEPS_CFLAGS) $(LLVM_CXXFLAGS)
+AM_LDFLAGS = $(LLVM_LDFLAGS)
+LIBS = $(DEPS_LIBS) $(LLVM_LIBS)
 
 bin_PROGRAMS= mec
-mec_SOURCES = ast.cpp ast.h \
+mec_SOURCES = \
+ast.cpp ast.h \
 basicblocks.cpp basicblocks.h \
 bind.cpp \
 build.cpp \
@@ -16,6 +18,7 @@ forany.cpp \
 functions.cpp functions.h \
 gen.cpp \
 getters.cpp \
+llvmgen.cpp llvmgen.h \
 lookup.cpp \
 lts.cpp lts.h \
 mec.cpp \
