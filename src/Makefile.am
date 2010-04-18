@@ -22,14 +22,14 @@ llvmgen.cpp llvmgen.h \
 lookup.cpp \
 lts.cpp lts.h \
 mec.cpp \
-parser.cpp parser.h \
+parser.cpp \
+parser.h \
 prettyprint.cpp \
 queries.cpp \
-scanner.cpp scanner.h \
-setters.cpp \
+scanner.cpp \
+scanner.h setters.cpp \
 show.cpp \
 token.h \
 typecodes.h \
 types.h \
 utilities.cpp utilities.h
-
