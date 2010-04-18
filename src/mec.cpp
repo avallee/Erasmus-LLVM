@@ -58,10 +58,12 @@
 
 #include <iostream>
 #include <iomanip>
+#include <string>
 #include <fstream>
 #include <sstream>
 #include <list>
 #include <map>
+#include <locale>
 
 #include <glibmm.h>
 //#include <sys/io.h> // patch (not needed)
@@ -74,7 +76,7 @@ using namespace std;
  *  changes to the prelude, then both this value and prelude.cpp should
  *  be changed.
  */
-const string PRELUDE_VERSION = "43";
+const Glib::ustring PRELUDE_VERSION = "43";
 
 /** Compiler option  "A": Write AST to a file. */
 bool drawAST = false;
@@ -112,16 +114,16 @@ bool tracing = false;
 int maxCycles = 100;
 
 /** Compiler option  "O": output file nane. */
-string outfilename = "";
+Glib::ustring outfilename = "";
 
 /** Compiler option  "W": show warning messages. */
 bool showWarnings = false;
 
 /** Default path to 'prelude.cpp'. */
-string preludeFileName = "prelude.cpp";
+Glib::ustring preludeFileName = "prelude.cpp";
 
 /** Names of C++ files to be included in output. */
-vector<string> cppfilenames;
+vector<Glib::ustring> cppfilenames;
 
 /** Extract Erasmus source from a Latex file. */
 void extract(istream & is, ostream & os)
@@ -160,16 +162,16 @@ void extract(istream & is, ostream & os)
  * \param os is the stream to copy to.
  * \param start indicates where to start copying: it immediately follows "//*".
  */
-void copyprelude(istream & is, ostream & os, string start)
+void copyprelude(istream & is, ostream & os, Glib::ustring start)
 {
     is.seekg(0);
     bool copying = false;
     string line;
     while (getline(is, line))
     {
-        if (copying && line.find("//*", 0) != string::npos)
+        if (copying && line.find("//*", 0) != Glib::ustring::npos)
             break;
-        if (line.find("//*" + start, 0) != string::npos)
+        if (line.find("//*" + start, 0) != Glib::ustring::npos)
         {
             copying = true;
             continue;
@@ -180,26 +182,27 @@ void copyprelude(istream & is, ostream & os, string start)
 }
 
 // Forward reference
-void readFiles(string root, int & tfnum, vector<string> & filenames, ostream & log);
+void readFiles(Glib::ustring root, int & tfnum, vector<Glib::ustring> & filenames, ostream & log);
 
 /** Check a file for import commands. */
-void checkFile(string efn, int & tfnum, vector<string> & filenames, ostream & log)
+void checkFile(Glib::ustring efn, int & tfnum, vector<Glib::ustring> & filenames, ostream & log)
 {
     ifstream efs(efn.c_str());
     string buffer;
     while (getline(efs, buffer))
     {
-        string::size_type p1 = buffer.find_first_not_of(" \t");
-        string::size_type p2 = buffer.find("import", p1);
-        if (p2 == p1 && p2 != string::npos)
+        Glib::ustring ubuffer(buffer);
+        Glib::ustring::size_type p1 = ubuffer.find_first_not_of(" \t");
+        Glib::ustring::size_type p2 = ubuffer.find("import", p1);
+        if (p2 == p1 && p2 != Glib::ustring::npos)
         {
-            string::size_type pos = p1 + 7;
+            Glib::ustring::size_type pos = p1 + 7;
             int state = 1;
             bool scanning = true;
-            string fn;
-            while (scanning && pos < buffer.size())
+            Glib::ustring fn;
+            while (scanning && pos < ubuffer.size())
             {
-                char c = buffer[pos];
+                char c = ubuffer[pos];
                 switch (state)
                 {
                     case 1:
@@ -255,9 +258,9 @@ void checkFile(string efn, int & tfnum, vector<string> & filenames, ostream & lo
 }
 
 /** Read a source file, recursively read imports. */
-void readFiles(string root, int & tfnum, vector<string> & filenames, ostream & log)
+void readFiles(Glib::ustring root, int & tfnum, vector<Glib::ustring> & filenames, ostream & log)
 {
-    string efn = root + ".e";
+    Glib::ustring efn = root + ".e";
     ifstream efs(efn.c_str());
     if (efs)
     {
@@ -266,13 +269,13 @@ void readFiles(string root, int & tfnum, vector<string> & filenames, ostream & l
     }
     else // No .e file, try .tex
     {
-        string tfn = root + ".tex";
+        Glib::ustring tfn = root + ".tex";
         ifstream tfs(tfn.c_str());
         if (tfs)
         {
             ostringstream oss;
             oss << "temp_" << ++tfnum << ".e";
-            string tempfn = oss.str();
+            Glib::ustring tempfn = oss.str();
             ofstream ofs(tempfn.c_str());
             cout << "Extracting '" << tfn << "' -> '" << tempfn << "'\n";
             extract(tfs, ofs);
@@ -292,7 +295,7 @@ void readFiles(string root, int & tfnum, vector<string> & filenames, ostream & l
  * \param clArg is the command-line argument.
  * \return \a true if no errors, \a false if errors.
  */
-bool compile(string clArg)
+bool compile(Glib::ustring clArg)
 {
 
     // Process compiler options
@@ -446,25 +449,25 @@ bool compile(string clArg)
     try
     {
         // 'root' is the input file name without extension
-        string root;
-        if (clArg.rfind(".e") != string::npos)
+        Glib::ustring root;
+        if (clArg.rfind(".e") != Glib::ustring::npos)
             root = clArg.substr(0, clArg.size() - 2);
-        else if (clArg.rfind(".tex") != string::npos)
+        else if (clArg.rfind(".tex") != Glib::ustring::npos)
             root = clArg.substr(0, clArg.size() - 4);
         else
             root = clArg;
 
         cerr << "Root = " << root << endl;
 
-        string codefilename   = root + ".cpp";
+        Glib::ustring codefilename   = root + ".cpp";
         if (outfilename != "")
             codefilename = outfilename;
-        string logfilename    = root + ".log";
+        Glib::ustring logfilename    = root + ".log";
         ofstream log(logfilename.c_str());
         log << "MEC " << today() << endl;
 
         // Build a list of files to scan.
-        vector<string> filenames;
+        vector<Glib::ustring> filenames;
         //      filenames.push_back(sysProtName);
 
         int tfnum = 0;
@@ -472,7 +475,7 @@ bool compile(string clArg)
 
         list<Token> tokens;
         // Phase 1: scan source files
-        for (vector<string>::const_iterator it = filenames.begin();
+        for (vector<Glib::ustring>::const_iterator it = filenames.begin();
              it != filenames.end();
              ++it)
         {
@@ -585,11 +588,11 @@ bool compile(string clArg)
 
                 string firstLine;
                 getline(prelude, firstLine);
-                string::size_type b = firstLine.find_first_of("01243456789");
-                string::size_type e = firstLine.find_first_not_of("01243456789");
-                if (b == string::npos && e == string::npos)
+                Glib::ustring::size_type b = firstLine.find_first_of("01243456789");
+                Glib::ustring::size_type e = firstLine.find_first_not_of("01243456789");
+                if (b == Glib::ustring::npos && e == Glib::ustring::npos)
                     Error() << "No firstLine in prelude.cpp." << THROW;
-                string version = firstLine.substr(b, e - b);
+                Glib::ustring version = firstLine.substr(b, e - b);
                 if (version != PRELUDE_VERSION)
                 {
                     cerr << "Incompatibility:\n";
@@ -604,7 +607,7 @@ bool compile(string clArg)
                 copyprelude(prelude, src, "A");
 
                 // Copy user declarations
-                for (vector<string>::const_iterator it = cppfilenames.begin(); it != cppfilenames.end(); ++it)
+                for (vector<Glib::ustring>::const_iterator it = cppfilenames.begin(); it != cppfilenames.end(); ++it)
                 {
                     ifstream is(it->c_str());
                     if (!is)
@@ -654,7 +657,7 @@ bool compile(string clArg)
             // Draw AST
             if (drawAST)
             {
-                string astfilename = root + ".ast";
+                Glib::ustring astfilename = root + ".ast";
                 set<int> nodeNums;
                 ofstream ast(astfilename.c_str());
                 prog->drawAST(ast, nodeNums, 0);
@@ -666,7 +669,7 @@ bool compile(string clArg)
             cout << "Done!\n";
         }
     }
-    catch (const string & msg)
+    catch (const Glib::ustring & msg)
     {
         cerr << msg << "\nCompilation terminated.\n";
         return false;
@@ -676,6 +679,9 @@ bool compile(string clArg)
 
 int main(int argc, char *argv[])
 {
+
+//    locale user_locale = locale("");
+//    locale::global(user_locale);
     Glib::init();
 
     cerr << "MEC (" << today() << ").\n\n";

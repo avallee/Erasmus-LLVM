@@ -11,6 +11,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <glibmm.h>
 
 using namespace std;
 
@@ -41,11 +42,11 @@ class Scanner
     private:
 
         /** A map giving the kind of token corresponding to each keyword string. */
-        map<string, TokenKind> keywords;
+        map<Glib::ustring, TokenKind> keywords;
 
         /** The source text of the file.
           Each element points to a line of source code.*/
-        vector<char*> source;
+        vector<Glib::ustring> source;
 
 };
 

@@ -10,6 +10,7 @@
 #include <sstream>
 #include <memory>
 #include <stdexcept>
+#include <glibmm.h>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ struct Errpos
      * \param lineNum is the number of the source code line.
      * \param charPos is the position of the character on the line.
      */
-    Errpos(char* pLine = 0, int lineNum = 0, int charPos = 0)
+    Errpos(Glib::ustring pLine = 0, int lineNum = 0, int charPos = 0)
         : pLine(pLine), lineNum(lineNum), charPos(charPos)
     {}
 
@@ -34,7 +35,7 @@ struct Errpos
     /** Write an error position, displaying the whole line and a caret. */
     friend ostream & operator<<(ostream & os, const Errpos & ep)
     {
-        if (ep.pLine)
+        if (ep.pLine.size())
         {
             os << '\n' << setw(4) << ep.lineNum << ": " << ep.pLine << "\n      ";
             for (int i = 0; i < ep.charPos; ++i)
@@ -47,7 +48,7 @@ struct Errpos
     }
 
     /** Pointer to source line. */
-    char *pLine;
+    Glib::ustring pLine;
 
     /** Number of source line. */
     int lineNum;

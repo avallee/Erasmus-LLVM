@@ -9,10 +9,13 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <string>
 #include <vector>
+#include <glibmm.h>
 
 using namespace std;
+using namespace Glib::Unicode;
 
 Scanner::Scanner()
 {
@@ -101,8 +104,9 @@ Scanner::Scanner()
 
 Scanner::~Scanner()
 {
-    for (vector<char*>::iterator it= source.begin(); it != source.end(); ++it)
-        delete *it;
+    //Out this was when we used a vector of char stars.
+//    for (vector<char*>::iterator it= source.begin(); it != source.end(); ++it)
+//        delete *it;
 }
 
 /** Read characters from an input stream, stopping at terminator
@@ -112,7 +116,7 @@ Scanner::~Scanner()
  * \param line points to the beginning of the current line,
  *        and is used for reporting illegal characters.
  */
-string readChars(char * & pc, char term, char *line)
+Glib::ustring readChars(Glib::ustring::iterator pc, char term, Glib::ustring line)
 {
     string result;
     while (true)
@@ -165,31 +169,34 @@ void Scanner::scanFile(string filename, list<Token> & tokens)
     if (!ifs)
         Error() << "failed to open input file '" << filename << "'.\n" << THROW;
 
-    const int BUFSIZE = 1000;
-    char buffer[BUFSIZE];
-    char *pc;
+    //const int BUFSIZE = 1000;
+    //char buffer[BUFSIZE];
+    //char *pc;
+    string buffer;
     source.clear(); // Delete stuff from previous file
 
-    while (ifs.getline(buffer, BUFSIZE))
+    while (getline(ifs, buffer))
     {
         // Big memory leak here?
-        char* pc = new char[strlen(buffer) + 1];
-        strcpy(pc, buffer);
-        source.push_back(pc);
+        //char* pc = new char[strlen(buffer) + 1];
+        //strcpy(pc, buffer);
+        source.push_back(Glib::locale_to_utf8(buffer));
     }
     ifs.close();
 
-    vector<char*>::const_iterator srcit = source.begin();
+    vector<Glib::ustring>::iterator srcit = source.begin();
+    Glib::ustring::iterator pc, source_begin;
     if (srcit == source.end())
         Error() << "input file '" << filename << "' is empty.\n" << THROW;
 
-    pc = *srcit - 1;
+    source_begin = pc = srcit->begin();
     while (true)
     {
         int state = 0;
         do
         {
-            ++pc;
+            if(pc != source_begin)
+                ++pc;
             switch (state)
             {
                 case 0: // Initial state: no context
@@ -198,7 +205,7 @@ void Scanner::scanFile(string filename, list<Token> & tokens)
                         ++srcit;
                         if (srcit == source.end())
                             return;
-                        pc = *srcit - 1;
+                        source_begin = pc = srcit->begin();
                     }
                     else if (*pc == '-')
                         state = 1;
@@ -212,7 +219,6 @@ void Scanner::scanFile(string filename, list<Token> & tokens)
                     else
                     {
                         --pc;
-                        *pc = '-';
                         state = 3;
                     }
                     break;
@@ -221,21 +227,22 @@ void Scanner::scanFile(string filename, list<Token> & tokens)
                     ++srcit;
                     if (srcit == source.end())
                         return;
-                    pc = *srcit - 1;
+                    source_begin = pc = srcit->begin();
                     state = 0;
                     break;
             }
         }
-        while (state < 3)
-            ;
+        while (state < 3);
 
         // *pc holds the first character of the next token.
-        Errpos ep(*srcit, srcit - source.begin() + 1, pc - *srcit);
+        Errpos ep(*srcit, 
+                  distance(source.begin(), srcit) + 1,
+                  distance(source_begin,pc));
 
         // Digit => numeric literal.
         if (isdigit(*pc))
         {
-            string val;
+            Glib::ustring val;
             bool hasPoint = false;
             //         bool byte = false;
             bool floating = false;
@@ -287,287 +294,241 @@ void Scanner::scanFile(string filename, list<Token> & tokens)
             }
             --pc;
         }
+        else if (isalpha(*pc))
+        {
+            string idval;
+            while (isalnum(*pc) || *pc == '_')
+                idval += *pc++;
+            --pc;
+            if (keywords.find(idval) == keywords.end())
+                // Not a keyword - must be an identifier
+                tokens.push_back(Token(ep, IDENVAL, idval));
+            else
+            {
+                // It's a keyword.
+                tokens.push_back(Token(ep, keywords[idval], idval, true));
+            }
+        }
+        else if (*pc == '"')
+        {
+            string value = readChars(pc, '"', *srcit);
+            if (value.length() == 1)
+                tokens.push_back(Token(ep, CHARVAL, value));
+            else
+                tokens.push_back(Token(ep, TEXTVAL, value));
+        }
+        else if (*pc == '\'')
+        {
+            string value = readChars(pc, '\'', *srcit);
+            if (value.length() == 1)
+                tokens.push_back(Token(ep, CHARVAL, value));
+            else
+                tokens.push_back(Token(ep, TEXTVAL, value));
+        }
+        else
+        {
+            switch (*pc)
+            {
 
-        //      }
-        //
-        //         if (*pc == 'f' || *pc == 'F')
-        //         {
-        //            pc++;
-        //            floating = true;
-        //         }
-        //         else if (*pc == 'b' || *pc == 'B')
-        //         {
-        //            pc++;
-        //            byte = true;
-        //         }
-        //
-        //         if (byte)
-        //         {
-        //            if (hasPoint)
-        //            {
-        //               cerr << "Value is not a byte: stored as Decimal." << ep;
-        //               tokens.push_back(Token(ep, DECIMALVAL, val));
-        //            }
-        //            else
-        //            {
-        //               if (atoi(val.c_str()) > 255)
-        //               {
-        //                  cerr << "Value is too big to be a byte: stored as Integer." << ep;
-        //                  tokens.push_back(Token(ep, INTVAL, val));
-        //               }
-        //               else
-        //                  tokens.push_back(Token(ep, BYTEVAL, val));
-        //            }
-        //         }
-        //         else if (floating)
-        //            tokens.push_back(Token(ep, FLOATVAL, val));
-        //         else if (hasPoint)
-        //            tokens.push_back(Token(ep, DECIMALVAL, val));
-        //         else
-        //         {
-        //            tokens.push_back(Token(ep, INTVAL, val));
-        //            if (dots)
-        //               tokens.push_back(Token(ep, OP_DOTS, ".."));
-        //         }
-        //         --pc;
-        //      }
+                // Digraphs
 
-        // Alpha => keyword or identifier.
-else if (isalpha(*pc))
-{
-    string idval;
-    while (isalnum(*pc) || *pc == '_')
-        idval += *pc++;
-    --pc;
-    if (keywords.find(idval) == keywords.end())
-        // Not a keyword - must be an identifier
-        tokens.push_back(Token(ep, IDENVAL, idval));
-    else
-    {
-        // It's a keyword.
-        tokens.push_back(Token(ep, keywords[idval], idval, true));
+                case '+':
+                    ++pc;
+                    if (*pc == '=')
+                        tokens.push_back(Token(ep, OP_PLUS_EQ, "+="));
+                    else
+                    {
+                        tokens.push_back(Token(ep, OP_PLUS, "+"));
+                        --pc;
+                    }
+                    break;
+
+                case '-':
+                    ++pc;
+                    if (*pc == '=')
+                        tokens.push_back(Token(ep, OP_MINUS_EQ, "-="));
+                    else if (*pc == '>')
+                        tokens.push_back(Token(ep, ARROW, "->"));  // not used any more
+                    else
+                    {
+                        tokens.push_back(Token(ep, OP_MINUS, "-"));
+                        --pc;
+                    }
+                    break;
+
+                case '*':
+                    ++pc;
+                    if (*pc == '=')
+                        tokens.push_back(Token(ep, OP_MUL_EQ, "*="));
+                    else
+                    {
+                        tokens.push_back(Token(ep, OP_MUL, "*"));
+                        --pc;
+                    }
+                    break;
+
+                case '/':
+                    ++pc;
+                    if (*pc == '/')
+                        tokens.push_back(Token(ep, OP_CAT, "//"));
+                    else if (*pc == '=')
+                        tokens.push_back(Token(ep, OP_DIV_EQ, "/="));
+                    else
+                    {
+                        tokens.push_back(Token(ep, OP_DIV, "/"));
+                        --pc;
+                    }
+                    break;
+
+                case '%':
+                    ++pc;
+                    if (*pc == '=')
+                        tokens.push_back(Token(ep, OP_MOD_EQ, "%="));
+                    else if (*pc == '%')
+                        tokens.push_back(Token(ep, PERC_PERC, "%%"));
+                    else
+                    {
+                        tokens.push_back(Token(ep, OP_MOD, "%"));
+                        --pc;
+                    }
+                    break;
+
+                case '<':
+                    ++pc;
+                    if (*pc == '=')
+                        tokens.push_back(Token(ep, OP_LE, "<="));
+                    else if (*pc == '>')
+                        tokens.push_back(Token(ep, OP_NE, "<>"));
+                    else if (*pc == '-')
+                        tokens.push_back(Token(ep, OP_MOVE, "<-"));
+                    else
+                    {
+                        tokens.push_back(Token(ep, OP_LT, "<"));
+                        --pc;
+                    }
+                    break;
+
+                case '>':
+                    ++pc;
+                    if (*pc == '=')
+                        tokens.push_back(Token(ep, OP_GE, ">="));
+                    else
+                    {
+                        tokens.push_back(Token(ep, OP_GT, ">"));
+                        --pc;
+                    }
+                    break;
+
+                case ':':
+                    ++pc;
+                    if (*pc == '=')
+                        tokens.push_back(Token(ep, OP_ASSIGN, ":="));
+                    else
+                    {
+                        tokens.push_back(Token(ep, COLON, ":"));
+                        --pc;
+                    }
+                    break;
+
+                case '~':
+                    ++pc;
+                    if (*pc == '=')
+                        tokens.push_back(Token(ep, OP_NE, "~="));
+                    else
+                        cerr << "Warning: '~' not followed by '='." << ep;
+                    break;
+
+                case '!':
+                    ++pc;
+                    if (*pc == '=')
+                        tokens.push_back(Token(ep, OP_NE, "!="));
+                    else
+                        cerr << "Warning: '!' not followed by '='." << ep;
+                    break;
+
+                case '.': // 071108
+                    ++pc;
+                    if (*pc == '.')
+                        tokens.push_back(Token(ep, OP_DOTS, ".."));
+                    else
+                    {
+                        tokens.push_back(Token(ep, DOT, "."));
+                        --pc;
+                    }
+                    break;
+
+                case '&': // 081125
+                    ++pc;
+                    if (*pc == '=')
+                        tokens.push_back(Token(ep, OP_AND_EQ, "&="));
+                    else
+                        cerr << "Warning: '&' not followed by '='." << ep;
+                    break;
+
+                    // Single characters
+
+                case '@':
+                    tokens.push_back(Token(ep, AT, "@"));
+                    break;
+
+                case '=':
+                    tokens.push_back(Token(ep, OP_EQ, "="));
+                    break;
+
+                case '#': // 071108
+                    tokens.push_back(Token(ep, OP_SHARP, "#"));
+                    break;
+
+                case '[':
+                    tokens.push_back(Token(ep, LB, "["));
+                    break;
+
+                case ']':
+                    tokens.push_back(Token(ep, RB, "]"));
+                    break;
+
+                case '{':
+                    tokens.push_back(Token(ep, LC, "{"));
+                    break;
+
+                case '}':
+                    tokens.push_back(Token(ep, RC, "}"));
+                    break;
+
+                case '(':
+                    tokens.push_back(Token(ep, LP, "("));
+                    break;
+
+                case ')':
+                    tokens.push_back(Token(ep, RP, ")"));
+                    break;
+
+                case '|':
+                    tokens.push_back(Token(ep, BAR, "|"));
+                    break;
+
+                case '^':
+                    tokens.push_back(Token(ep, CARET, "^"));
+                    break;
+
+                case '?':
+                    tokens.push_back(Token(ep, QUEST_MARK, "?"));
+                    break;
+
+                case ',':
+                    tokens.push_back(Token(ep, COMMA, ","));
+                    break;
+
+                case ';':
+                    tokens.push_back(Token(ep, SEMICOLON, ";"));
+                    break;
+
+                default:
+                    cerr << "Warning: illegal character." << ep;
+
+            }
+        }
     }
-}
-else if (*pc == '"')
-{
-    string value = readChars(pc, '"', *srcit);
-    if (value.length() == 1)
-        tokens.push_back(Token(ep, CHARVAL, value));
-    else
-        tokens.push_back(Token(ep, TEXTVAL, value));
-}
-else if (*pc == '\'')
-{
-    string value = readChars(pc, '\'', *srcit);
-    if (value.length() == 1)
-        tokens.push_back(Token(ep, CHARVAL, value));
-    else
-        tokens.push_back(Token(ep, TEXTVAL, value));
-}
-else
-{
-    switch (*pc)
-    {
-
-        // Digraphs
-
-        case '+':
-            ++pc;
-            if (*pc == '=')
-                tokens.push_back(Token(ep, OP_PLUS_EQ, "+="));
-            else
-            {
-                tokens.push_back(Token(ep, OP_PLUS, "+"));
-                --pc;
-            }
-            break;
-
-        case '-':
-            ++pc;
-            if (*pc == '=')
-                tokens.push_back(Token(ep, OP_MINUS_EQ, "-="));
-            else if (*pc == '>')
-                tokens.push_back(Token(ep, ARROW, "->"));  // not used any more
-            else
-            {
-                tokens.push_back(Token(ep, OP_MINUS, "-"));
-                --pc;
-            }
-            break;
-
-        case '*':
-            ++pc;
-            if (*pc == '=')
-                tokens.push_back(Token(ep, OP_MUL_EQ, "*="));
-            else
-            {
-                tokens.push_back(Token(ep, OP_MUL, "*"));
-                --pc;
-            }
-            break;
-
-        case '/':
-            ++pc;
-            if (*pc == '/')
-                tokens.push_back(Token(ep, OP_CAT, "//"));
-            else if (*pc == '=')
-                tokens.push_back(Token(ep, OP_DIV_EQ, "/="));
-            else
-            {
-                tokens.push_back(Token(ep, OP_DIV, "/"));
-                --pc;
-            }
-            break;
-
-        case '%':
-            ++pc;
-            if (*pc == '=')
-                tokens.push_back(Token(ep, OP_MOD_EQ, "%="));
-            else if (*pc == '%')
-                tokens.push_back(Token(ep, PERC_PERC, "%%"));
-            else
-            {
-                tokens.push_back(Token(ep, OP_MOD, "%"));
-                --pc;
-            }
-            break;
-
-        case '<':
-            ++pc;
-            if (*pc == '=')
-                tokens.push_back(Token(ep, OP_LE, "<="));
-            else if (*pc == '>')
-                tokens.push_back(Token(ep, OP_NE, "<>"));
-            else if (*pc == '-')
-                tokens.push_back(Token(ep, OP_MOVE, "<-"));
-            else
-            {
-                tokens.push_back(Token(ep, OP_LT, "<"));
-                --pc;
-            }
-            break;
-
-        case '>':
-            ++pc;
-            if (*pc == '=')
-                tokens.push_back(Token(ep, OP_GE, ">="));
-            else
-            {
-                tokens.push_back(Token(ep, OP_GT, ">"));
-                --pc;
-            }
-            break;
-
-        case ':':
-            ++pc;
-            if (*pc == '=')
-                tokens.push_back(Token(ep, OP_ASSIGN, ":="));
-            else
-            {
-                tokens.push_back(Token(ep, COLON, ":"));
-                --pc;
-            }
-            break;
-
-        case '~':
-            ++pc;
-            if (*pc == '=')
-                tokens.push_back(Token(ep, OP_NE, "~="));
-            else
-                cerr << "Warning: '~' not followed by '='." << ep;
-            break;
-
-        case '!':
-            ++pc;
-            if (*pc == '=')
-                tokens.push_back(Token(ep, OP_NE, "!="));
-            else
-                cerr << "Warning: '!' not followed by '='." << ep;
-            break;
-
-        case '.': // 071108
-            ++pc;
-            if (*pc == '.')
-                tokens.push_back(Token(ep, OP_DOTS, ".."));
-            else
-            {
-                tokens.push_back(Token(ep, DOT, "."));
-                --pc;
-            }
-            break;
-
-        case '&': // 081125
-            ++pc;
-            if (*pc == '=')
-                tokens.push_back(Token(ep, OP_AND_EQ, "&="));
-            else
-                cerr << "Warning: '&' not followed by '='." << ep;
-            break;
-
-            // Single characters
-
-        case '@':
-            tokens.push_back(Token(ep, AT, "@"));
-            break;
-
-        case '=':
-            tokens.push_back(Token(ep, OP_EQ, "="));
-            break;
-
-        case '#': // 071108
-            tokens.push_back(Token(ep, OP_SHARP, "#"));
-            break;
-
-        case '[':
-            tokens.push_back(Token(ep, LB, "["));
-            break;
-
-        case ']':
-            tokens.push_back(Token(ep, RB, "]"));
-            break;
-
-        case '{':
-            tokens.push_back(Token(ep, LC, "{"));
-            break;
-
-        case '}':
-            tokens.push_back(Token(ep, RC, "}"));
-            break;
-
-        case '(':
-               tokens.push_back(Token(ep, LP, "("));
-                                break;
-
-        case ')':
-                                tokens.push_back(Token(ep, RP, ")"));
-                                break;
-
-        case '|':
-                                tokens.push_back(Token(ep, BAR, "|"));
-                                break;
-
-        case '^':
-                                tokens.push_back(Token(ep, CARET, "^"));
-                                break;
-
-        case '?':
-                                tokens.push_back(Token(ep, QUEST_MARK, "?"));
-                                break;
-
-        case ',':
-                                tokens.push_back(Token(ep, COMMA, ","));
-                                break;
-
-        case ';':
-                                tokens.push_back(Token(ep, SEMICOLON, ";"));
-                                break;
-
-        default:
-                                cerr << "Warning: illegal character." << ep;
-
-    }
-}
-}
 }
 
 
