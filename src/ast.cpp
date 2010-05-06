@@ -32,7 +32,7 @@ Node BaseNode::theOutputFileNode      = new FileTypeNode(FILE_OUTPUT);
  * \param ep gives the source code coordinates for the node.
  * \param kv is the kind of node.
  */
-    BaseNode::BaseNode(Errpos ep, NodeKind kv)
+BaseNode::BaseNode(Errpos ep, NodeKind kv)
 : ep(ep), kv(kv), defChain(0), nodeNum(nodeCount++)
 {}
 
@@ -94,11 +94,11 @@ void BaseNode::showLine(ostream & os)
 
 // Constructors for other node types.
 
-    ProgramNode::ProgramNode(Errpos ep, List nodes)
+ProgramNode::ProgramNode(Errpos ep, List nodes)
 : BaseNode(ep, PROGRAM_NODE), nodes(nodes)
 {}
 
-    InstanceNode::InstanceNode(Errpos ep, Node name, List args, bool topLevel)
+InstanceNode::InstanceNode(Errpos ep, Node name, List args, bool topLevel)
 : BaseNode(ep, INSTANCE_NODE), name(name), args(args),
     topLevel(topLevel)
 {}
@@ -106,32 +106,32 @@ void BaseNode::showLine(ostream & os)
 RemoveNode::RemoveNode() : BaseNode(Errpos(), REMOVE_NODE)
 {}
 
-    ProcessNode::ProcessNode(Errpos ep, List params, Node seq)
+ProcessNode::ProcessNode(Errpos ep, List params, Node seq)
 : BaseNode(ep, PROCESS_NODE), params(params), seq(seq), typeNum(0)
 {}
 
-    CppNode::CppNode(Errpos ep, List params, Node type)
+CppNode::CppNode(Errpos ep, List params, Node type)
 : BaseNode(ep, CPP_NODE), params(params), type(type)
 {}
 
-    ProcedureNode::ProcedureNode(Errpos ep, List params, Node seq)
+ProcedureNode::ProcedureNode(Errpos ep, List params, Node seq)
 : BaseNode(ep, PROCEDURE_NODE), params(params), seq(seq)
 {}
 
-    ProtocolNode::ProtocolNode(Errpos ep, Node expr)
+ProtocolNode::ProtocolNode(Errpos ep, Node expr)
 : BaseNode(ep, PROTOCOL_NODE), expr(expr), numFields(0), plts(0)
 {}
 
-    DefNode::DefNode(Errpos ep, Node name, Node value, bool incremental)
+DefNode::DefNode(Errpos ep, Node name, Node value, bool incremental)
 : BaseNode(ep, DEF_NODE), incremental(incremental),
-    name(name), value(value)
+  name(name), value(value)
 {}
 
-    CellNode::CellNode(Errpos ep, List params, List instances)
+CellNode::CellNode(Errpos ep, List params, List instances)
 : BaseNode(ep, CELL_NODE), params(params), instances(instances)
 {}
 
-    SequenceNode::SequenceNode(Errpos ep, List stmts)
+SequenceNode::SequenceNode(Errpos ep, List stmts)
 : BaseNode(ep, SEQUENCE_NODE), stmts(stmts)
 {}
 
@@ -141,22 +141,22 @@ SkipNode::SkipNode(Errpos ep) : BaseNode(ep, SKIP_NODE)
 ExitNode::ExitNode(Errpos ep) : BaseNode(ep, EXIT_NODE)
 {}
 
-    IfNode::IfNode(Errpos ep, List condPairs, Node alt)
+IfNode::IfNode(Errpos ep, List condPairs, Node alt)
 : BaseNode(ep, IF_NODE), condPairs(condPairs), alt(alt)
 {}
 
-    CondPairNode::CondPairNode(Errpos ep, Node cond, Node seq)
+CondPairNode::CondPairNode(Errpos ep, Node cond, Node seq)
 : BaseNode(ep, CONDPAIR_NODE), cond(cond), seq(seq), decs(List()), parent(0)
 {}
 
 LoopNode::LoopNode(Errpos ep, Node seq) : BaseNode(ep, LOOP_NODE), seq(seq)
 {}
 
-    ForNode::ForNode(Errpos ep, Node comp, Node seq)
+ForNode::ForNode(Errpos ep, Node comp, Node seq)
 : BaseNode(ep, FOR_NODE), comp(comp), seq(seq)
 {}
 
-    AnyNode::AnyNode(Errpos ep, Node comp, Node seq, Node alt)
+AnyNode::AnyNode(Errpos ep, Node comp, Node seq, Node alt)
 : BaseNode(ep, ANY_NODE), comp(comp), seq(seq), alt(alt)
 {}
 
@@ -223,26 +223,25 @@ EnumSetNode::EnumSetNode(Errpos ep, Node type)
     : BaseNode(ep, ENUM_SET_NODE), type(type), max(0), owner("")
 {}
 
-    EnumInitNode::EnumInitNode(Errpos ep, string owner, Node var)
+EnumInitNode::EnumInitNode(Errpos ep, string owner, Node var)
 : BaseNode(ep, ENUM_INIT_NODE), owner(owner), var(var)
 {}
 
-    EnumTermNode::EnumTermNode(Errpos ep, string owner, Block bb, Node var, Node max)
+EnumTermNode::EnumTermNode(Errpos ep, string owner, Block bb, Node var, Node max)
 : BaseNode(ep, ENUM_TERM_NODE), owner(owner), bb(bb), var(var), max(max)
 {}
 
-    EnumStepNode::EnumStepNode(Errpos ep, string owner, Node var)
+EnumStepNode::EnumStepNode(Errpos ep, string owner, Node var)
 : BaseNode(ep, MAP_STEP_NODE), owner(owner), var(var)
 {}
 
-    MatchNode::MatchNode(Errpos ep, Block bb, Node pred)
+MatchNode::MatchNode(Errpos ep, Block bb, Node pred)
 : BaseNode(ep, MATCH_NODE), bb(bb), pred(pred)
 {}
 
 SelectNode::SelectNode(Errpos ep, Policy policy, List options)
     : BaseNode(ep, SELECT_NODE), policy(policy), options(options),
     selNum(0), numBranches(0), selectStart(-1), selectEnd(-1), owner("")
-      //firstGuard(-1),
 {}
 
 OptionNode::OptionNode(Errpos ep, Policy policy, Node guard, Node seq)
@@ -251,30 +250,30 @@ OptionNode::OptionNode(Errpos ep, Policy policy, Node guard, Node seq)
     selectStart(-1), selectEnd(-1)
 {}
 
-    DotNode::DotNode(Errpos ep, Node port, Node field)
+DotNode::DotNode(Errpos ep, Node port, Node field)
 : BaseNode(ep, DOT_NODE), port(port), field(field)
 {}
 
-    QueryNode::QueryNode(Errpos ep, Node port, Node field, Node name, int phase)
+QueryNode::QueryNode(Errpos ep, Node port, Node field, Node name, int phase)
 : BaseNode(ep, QUERY_NODE), port(port), field(field), name(name), phase(phase)
 {}
 
-    BoolNode::BoolNode(Errpos ep, bool value)
+BoolNode::BoolNode(Errpos ep, bool value)
 : BaseNode(ep, BOOL_NODE), value(value), bb(0),
     evmBlockNum(0), noBlockYet(true)
 {}
 
-    CharNode::CharNode(Errpos ep, char value)
+CharNode::CharNode(Errpos ep, char value)
 : BaseNode(ep, CHAR_NODE), value(value),
     evmBlockNum(0), noBlockYet(true)
 {}
 
-    TextNode::TextNode(Errpos ep, string value)
+TextNode::TextNode(Errpos ep, string value)
 : BaseNode(ep, TEXT_NODE), value(value),
     evmBlockNum(0), noBlockYet(true)
 {}
 
-    NumNode::NumNode(Errpos ep, Node type, string value)
+NumNode::NumNode(Errpos ep, Node type, string value)
 : BaseNode(ep, NUM_NODE), type(type), value(value),
     evmBlockNum(0), noBlockYet(true)
 {}
@@ -291,7 +290,7 @@ CondExprNode::CondExprNode(Errpos ep, Node lhs, Node pred, Node rhs) :
     BaseNode(ep, CONDEXPR_NODE), lhs(lhs), pred(pred), rhs(rhs), type(0), bb(0)
 {}
 
-    UnopNode::UnopNode(Errpos ep, Operator op, Node operand)
+UnopNode::UnopNode(Errpos ep, Operator op, Node operand)
 : BaseNode(ep, UNOP_NODE), op(op), operand(operand),
     type(0), bb(0)
 {}
@@ -416,21 +415,21 @@ ThreadParamNode::ThreadParamNode(Errpos ep, Node name, PortKind portDir, Node ty
     owner(""), transfer(0)
 {}
 
-    StartNode::StartNode(Errpos ep, List calls, Node seq)
+StartNode::StartNode(Errpos ep, List calls, Node seq)
 : BaseNode(ep, START_NODE), calls(calls), seq(seq)
 {}
 
-    ThreadCallNode::ThreadCallNode(Errpos ep, Node name, List inputs, List outputs)
+ThreadCallNode::ThreadCallNode(Errpos ep, Node name, List inputs, List outputs)
 : BaseNode(ep, THREAD_CALL_NODE), name(name),
     inputs(inputs), outputs(outputs), numFields(0),
     inputTransfer(-1), outputTransfer(-1),
     startTransfer(-1), stopTransfer(-1)
 {}
 
-    ThreadStartNode::ThreadStartNode(Errpos ep, Node name, Node chName, int numFields)
+ThreadStartNode::ThreadStartNode(Errpos ep, Node name, Node chName, int numFields)
 : BaseNode(ep, THREAD_START_NODE), name(name), chName(chName), numFields(numFields)
 {}
 
-    ThreadStopNode::ThreadStopNode(Errpos ep, Node name, Node chName)
+ThreadStopNode::ThreadStopNode(Errpos ep, Node name, Node chName)
 : BaseNode(ep, THREAD_STOP_NODE), name(name), chName(chName)
 {}

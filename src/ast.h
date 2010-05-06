@@ -296,6 +296,9 @@ class BaseNode
         /** Perform Lightning assembly. */
         //virtual void genAssem();
 
+        /** Perform Lightning assembly. */
+        virtual void genLLVM();
+
         /** Add a Lightning jump instruction address. */
         virtual void addJumps(Patches keys) { }
 
@@ -619,6 +622,11 @@ class ProgramNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+
+    public:
+        void genLLVM();
+
+
 };
 
 /** An instance of a cell or closure. */
@@ -656,6 +664,8 @@ class InstanceNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Declaration for a C++ function or procedure that is defined externally. */
@@ -681,6 +691,8 @@ class CppNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Body of a procedure with port and variable parameters. */
@@ -729,6 +741,8 @@ class ProcedureNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Body of a closure with port and variable parameters. */
@@ -782,6 +796,8 @@ class ProcessNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** The root of a protocol expression tree. */
@@ -830,6 +846,8 @@ class ProtocolNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** A node containing a name and its definition.
@@ -890,6 +908,8 @@ class DefNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Definition of a cell with port and variable parameters. */
@@ -930,6 +950,8 @@ class CellNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** A sequence (list) of statements. */
@@ -960,6 +982,8 @@ class SequenceNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Skip statement. */
@@ -977,6 +1001,8 @@ class SkipNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Exit statement. */
@@ -1003,6 +1029,8 @@ class ExitNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
     private:
         /** Pointer to parent IfNode, set by \a genass(). */
         Node parent;
@@ -1042,6 +1070,8 @@ class IfNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
         void addJumps(Patches keys)
         {
             for (Patches::iterator i = keys.begin(); i != keys.end(); ++i)
@@ -1093,6 +1123,8 @@ class CondPairNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
     private:
         /** Pointer to parent IfNode, set by \a genass(). */
         Node parent;
@@ -1130,11 +1162,14 @@ class LoopNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();
-          void addJumps(Patches keys)
-          {
-          for (Patches::iterator i = keys.begin(); i != keys.end(); ++i)
-          jumps.push_back(*i);
-          }*/
+          */
+        void addJumps(Patches keys)
+        {
+            for (Patches::iterator i = keys.begin(); i != keys.end(); ++i)
+                jumps.push_back(*i);
+        }
+    public:
+        void genLLVM();
     private:
         vector<void*> jumps;
 };
@@ -1181,6 +1216,8 @@ class ForNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Any statement */
@@ -1231,6 +1268,8 @@ class AnyNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Set comprehension */
@@ -1288,6 +1327,8 @@ class ComprehensionNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Set corresponding to a range of values */
@@ -1341,6 +1382,8 @@ class RangeNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Initialization for range in for/any loop.
@@ -1386,6 +1429,8 @@ class RangeInitNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Termination test for range: generated by compiler. */
@@ -1436,6 +1481,8 @@ class RangeTermNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Step node for range: generated by compiler. */
@@ -1473,6 +1520,8 @@ class RangeStepNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Set corresponding to map variable */
@@ -1526,6 +1575,8 @@ class MapSetNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Initialization for map in for/any loop.
@@ -1571,6 +1622,8 @@ class MapInitNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Termination test for map: generated by compiler. */
@@ -1617,6 +1670,8 @@ class MapTermNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Step node for map: generated by compiler. */
@@ -1660,6 +1715,8 @@ class MapStepNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Set corresponding to enumeration type. */
@@ -1695,6 +1752,8 @@ class EnumSetNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Initialization for enumeration in for/any loop.
@@ -1721,6 +1780,8 @@ class EnumInitNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Step for enumeration in for/any loop.
@@ -1747,6 +1808,8 @@ class EnumStepNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Termination for enumeration in for/any loop.
@@ -1779,6 +1842,8 @@ class EnumTermNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Match test node: generated by compiler.
@@ -1805,6 +1870,8 @@ class MatchNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Select statement: defines policy, points to options. */
@@ -1854,6 +1921,8 @@ class SelectNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** One branch of a select statement. */
@@ -1905,6 +1974,8 @@ class OptionNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** An expression p.f, where p is a port name
@@ -1946,6 +2017,8 @@ class DotNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** An expression p?f, where p is a port name
@@ -1995,6 +2068,8 @@ class QueryNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Node for pervasive constant definitions. */
@@ -2040,6 +2115,8 @@ class ConstantNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Node used for constant, variable, and port declarations, and
@@ -2159,6 +2236,8 @@ class DecNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
         int getOffset() const;
         int getTypeCode() const
         {
@@ -2199,6 +2278,8 @@ class BoolNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
         int getTypeCode() const
         {
             return TYPE_BOOL;
@@ -2236,6 +2317,8 @@ class CharNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Text literal. */
@@ -2271,6 +2354,8 @@ class TextNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Numeric literal: may be Integer, Float, or Decimal. */
@@ -2312,6 +2397,8 @@ class NumNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
         int getTypeCode() const
         {
             return type->getTypeCode();
@@ -2351,6 +2438,8 @@ class ListopNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Root of a binary operator expression. */
@@ -2398,6 +2487,8 @@ class BinopNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
         Node getLHS() const
         {
             return lhs;
@@ -2456,6 +2547,8 @@ class CondExprNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Root of a unary operator expression/ */
@@ -2501,6 +2594,8 @@ class UnopNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Subscript expression */
@@ -2548,6 +2643,8 @@ class SubscriptNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Subrange expression: a[i..j] */
@@ -2585,6 +2682,8 @@ class SubrangeNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Iterator statements and expressions */
@@ -2623,6 +2722,8 @@ class IteratorNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** The basic type Void. */
@@ -2994,6 +3095,8 @@ class EnumValueNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Array types. */
@@ -3039,6 +3142,8 @@ class ArrayTypeNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Map (indexed) types. */
@@ -3076,6 +3181,8 @@ class MapTypeNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
         // int getSize() const;
 };
 
@@ -3098,6 +3205,8 @@ class IterTypeNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** The root of a function call expression.
@@ -3146,6 +3255,8 @@ class FunctionNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** A defining or defined occurrence of an identifier. */
@@ -3257,6 +3368,8 @@ class NameNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
         int getOffset() const;
         int getTypeCode() const
         {
@@ -3291,6 +3404,8 @@ class RemoveNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** A node generated to send a message unconditionally. */
@@ -3328,6 +3443,8 @@ class SendNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** A node generated to send a message in a select statement. */
@@ -3369,6 +3486,8 @@ class SendOptionNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** A node generated to complete the receive operation. */
@@ -3410,6 +3529,8 @@ class ReceiveNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** A node generated to prepare for a receive operation
@@ -3456,6 +3577,8 @@ class ReceiveOptionNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Definition of a thread. */
@@ -3506,6 +3629,8 @@ class ThreadNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Thread parameter. */
@@ -3559,6 +3684,8 @@ class ThreadParamNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Start statement. */
@@ -3589,6 +3716,8 @@ class StartNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Thread invocation. */
@@ -3641,6 +3770,8 @@ class ThreadCallNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Start a thread. */
@@ -3667,6 +3798,8 @@ class ThreadStartNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 /** Stop a thread. */
@@ -3690,6 +3823,8 @@ class ThreadStopNode : public BaseNode
           public:
           void prepAssem(AssemData aData);
           void genAssem();*/
+    public:
+        void genLLVM();
 };
 
 #endif

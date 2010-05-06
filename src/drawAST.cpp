@@ -4,6 +4,7 @@
 
 #include <set>
 #include <cstdlib>
+#include <algorithm>
 
 using namespace std;
 
@@ -110,22 +111,23 @@ void drawSubTree(ostream & os, Node pn, set<int> & nodeNums, int level)
 
 bool BaseNode::drawAST(ostream & os, set<int> & nodeNums, int level)
 {
+
     os << '\n' << setw(level) << ' ';
-    /*
-       if (find(nodeNums.begin(), nodeNums.end(), nodeNum) != nodeNums.end())
-       {
-       os << '#' << nodeNum;
-       return false;
-       }
-       else
-       {
-       nodeNums.insert(nodeNum);
-       os << '(' << nodeToString(kv) << ' ' << nodeNum << ' ';
-               os << drawInt("line", ep.lineNum);
-               os << drawInt("col", ep.charPos);
-               return true;
-               }
-               */
+
+    if (find(nodeNums.begin(), nodeNums.end(), nodeNum) != nodeNums.end())
+    {
+        os << '#' << nodeNum;
+        return false;
+    }
+    else
+    {
+        nodeNums.insert(nodeNum);
+        os << '(' << nodeToString(kv) << ' ' << nodeNum << ' ';
+                os << drawInt("line", ep.lineNum);
+                os << drawInt("col", ep.charPos);
+                return true;
+    }
+
     return false;
 }
 
@@ -521,111 +523,111 @@ bool ConstantNode::drawAST(ostream & os, set<int> & nodeNums, int level)
 bool DecNode::drawAST(ostream & os, set<int> & nodeNums, int level)
 {
     os << '\n' << setw(level) << ' ';
-    /*
-       if (find(nodeNums.begin(), nodeNums.end(), nodeNum) != nodeNums.end())
-       os << '#' << nodeNum;
-       else
-       {
-       nodeNums.insert(nodeNum);
-       if (type)
-       {
-    // has type
-    if (value)
+
+    if (find(nodeNums.begin(), nodeNums.end(), nodeNum) != nodeNums.end())
+        os << '#' << nodeNum;
+    else
     {
-    // type, value => declaration with initialization
-    if (value->kind() == DOT_NODE)
-    {
-    // v: T := p.f
-    os << "(DecReceive " << num() << ' ';
-            os << drawInt("line", ep.lineNum);
-            os << drawInt("col", ep.charPos);
-            drawSubTree(os, name, nodeNums, level + 2);
-            drawSubTree(os, type, nodeNums, level + 2);
-            drawSubTree(os, value, nodeNums, level + 2);
+        nodeNums.insert(nodeNum);
+        if (type)
+        {
+            // has type
+            if (value)
+            {
+                // type, value => declaration with initialization
+                if (value->kind() == DOT_NODE)
+                {
+                    // v: T := p.f
+                    os << "(DecReceive " << num() << ' ';
+                            os << drawInt("line", ep.lineNum);
+                            os << drawInt("col", ep.charPos);
+                            drawSubTree(os, name, nodeNums, level + 2);
+                            drawSubTree(os, type, nodeNums, level + 2);
+                            drawSubTree(os, value, nodeNums, level + 2);
+                }
+                else
+                {
+                    // v: T := e
+                    os << "(DecInit " << num() << ' ';
+                            os << drawInt("line", ep.lineNum);
+                            os << drawInt("col", ep.charPos);
+                            os << drawBool("constant", constant);
+                            drawSubTree(os, name, nodeNums, level + 2);
+                            drawSubTree(os, type, nodeNums, level + 2);
+                            drawSubTree(os, value, nodeNums, level + 2);
+                }
             }
             else
             {
-    // v: T := e
-    os << "(DecInit " << num() << ' ';
-            os << drawInt("line", ep.lineNum);
-            os << drawInt("col", ep.charPos);
-            os << drawBool("constant", constant);
-            drawSubTree(os, name, nodeNums, level + 2);
-            drawSubTree(os, type, nodeNums, level + 2);
-            drawSubTree(os, value, nodeNums, level + 2);
+                // type, no value => declaration
+                os << "(Dec " << num() << ' ';
+                        os << drawInt("line", ep.lineNum);
+                        os << drawInt("col", ep.charPos);
+                        os << drawBool("ref", reference);
+                        os << drawAttr("port", portToString(portDir));
+                        drawSubTree(os, name, nodeNums, level + 2);
+                        drawSubTree(os, type, nodeNums, level + 2);
             }
+        }
+        else
+        {
+            // no type
+            if (value)
+            {
+                // no type, value
+                if (name->kind() == DOT_NODE)
+                {
+                    // send
+                    os << "(Send " << num() << ' ';
+                            os << drawInt("line", ep.lineNum);
+                            os << drawInt("col", ep.charPos);
+                            drawSubTree(os, name, nodeNums, level + 2);
+                            drawSubTree(os, value, nodeNums, level + 2);
+                }
+                else if (value->kind() == DOT_NODE)
+                {
+                    // receive
+                    os << "(Receive " << num() << ' ';
+                            os << drawInt("line", ep.lineNum);
+                            os << drawInt("col", ep.charPos);
+                            drawSubTree(os, name, nodeNums, level + 2);
+                            drawSubTree(os, value, nodeNums, level + 2);
+                }
+                else
+                {
+                    // assign
+                    os << "(Assign " << num() << ' ';
+                            os << drawInt("line", ep.lineNum);
+                            os << drawInt("col", ep.charPos);
+                            drawSubTree(os, name, nodeNums, level + 2);
+                            drawSubTree(os, value, nodeNums, level + 2);
+                }
+            }
+            else if (ck == SEND)
+            {
+                // no type, no value => signal
+                os << "(SendSignal " << num() << ' ';
+                        os << drawInt("line", ep.lineNum);
+                        os << drawInt("col", ep.charPos);
+                        drawSubTree(os, name, nodeNums, level + 2);
+            }
+            else if (ck == RECEIVE)
+            {
+                // no type, no value => signal
+                os << "(ReceiveSignal " << num() << ' ';
+                        os << drawInt("line", ep.lineNum);
+                        os << drawInt("col", ep.charPos);
+                        drawSubTree(os, name, nodeNums, level + 2);
             }
             else
             {
-    // type, no value => declaration
-    os << "(Dec " << num() << ' ';
-            os << drawInt("line", ep.lineNum);
-            os << drawInt("col", ep.charPos);
-            os << drawBool("ref", reference);
-            os << drawAttr("port", portToString(portDir));
-            drawSubTree(os, name, nodeNums, level + 2);
-            drawSubTree(os, type, nodeNums, level + 2);
+                os << "(Unknown " << num() << ' ';
+                        drawSubTree(os, name, nodeNums, level + 2);
             }
-            }
-            else
-            {
-    // no type
-    if (value)
-    {
-    // no type, value
-    if (name->kind() == DOT_NODE)
-    {
-    // send
-    os << "(Send " << num() << ' ';
-            os << drawInt("line", ep.lineNum);
-            os << drawInt("col", ep.charPos);
-            drawSubTree(os, name, nodeNums, level + 2);
-            drawSubTree(os, value, nodeNums, level + 2);
-            }
-            else if (value->kind() == DOT_NODE)
-            {
-    // receive
-    os << "(Receive " << num() << ' ';
-            os << drawInt("line", ep.lineNum);
-            os << drawInt("col", ep.charPos);
-            drawSubTree(os, name, nodeNums, level + 2);
-            drawSubTree(os, value, nodeNums, level + 2);
-            }
-            else
-    {
-        // assign
-        os << "(Assign " << num() << ' ';
-                os << drawInt("line", ep.lineNum);
-                os << drawInt("col", ep.charPos);
-                drawSubTree(os, name, nodeNums, level + 2);
-                drawSubTree(os, value, nodeNums, level + 2);
-    }
-}
-else if (ck == SEND)
-{
-    // no type, no value => signal
-    os << "(SendSignal " << num() << ' ';
-            os << drawInt("line", ep.lineNum);
-            os << drawInt("col", ep.charPos);
-            drawSubTree(os, name, nodeNums, level + 2);
-}
-else if (ck == RECEIVE)
-{
-    // no type, no value => signal
-    os << "(ReceiveSignal " << num() << ' ';
-            os << drawInt("line", ep.lineNum);
-            os << drawInt("col", ep.charPos);
-            drawSubTree(os, name, nodeNums, level + 2);
-}
-else
-{
-    os << "(Unknown " << num() << ' ';
-            drawSubTree(os, name, nodeNums, level + 2);
-}
-}
-os << '\n' << setw(level) << ' ' << ')';
-} */
-return false;
+        }
+        os << '\n' << setw(level) << ' ' << ')';
+    } 
+    return false;
 }
 
 bool DotNode::drawAST(ostream & os, set<int> & nodeNums, int level)

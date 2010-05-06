@@ -1,6 +1,0 @@
-December 27th 2009
-Condensed project
- removed : write.cpp , everyhting related to lightining , genAssem etc.
-
-compile with g++ *.cpp
- 

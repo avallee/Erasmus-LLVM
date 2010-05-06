@@ -57,6 +57,7 @@
 #include "scanner.h"
 #include "types.h"
 #include "utilities.h"
+#include "llvmgen.h"
 
 //#include "genassem.h" // Lightning
 
@@ -73,6 +74,7 @@
 //#include <sys/io.h> // patch (not needed)
 
 using namespace std;
+using Glib::ustring;
 
 /** Expected version of prelude.cpp.
  *  This is a digit string that should be a substring of the first line
@@ -109,7 +111,7 @@ bool logGen = false;
 /** Compiler option "R": compile and run.
  *  If this is enabled, no C++ code is generated.
  */
-bool comRun = true;
+bool comRun = false;
 
 /** Compiler option  "T": Trace execution */
 bool tracing = false;
@@ -122,6 +124,9 @@ Glib::ustring outfilename = "";
 
 /** Compiler option  "W": show warning messages. */
 bool showWarnings = false;
+
+/** Compiler option  "Z": generate LLVM bitcode. */
+bool genLLVM = false;
 
 /** Default path to 'prelude.cpp'. */
 Glib::ustring preludeFileName = "prelude.cpp";
@@ -431,6 +436,13 @@ bool compile(Glib::ustring clArg)
                 showWarnings = clArg[0] == '+';
                 break;
 
+
+	   // Generate LLVM Byte Code
+         case 'z':
+         case 'Z':
+            genLLVM = clArg[0] == '+';
+            break;
+
             default:
                 cerr << "Unknown option '" << clArg << "'.\n";
                 return false;
@@ -670,6 +682,24 @@ bool compile(Glib::ustring clArg)
                 cerr << "AST written to " << astfilename << ".\n";
             }
 
+	// Generate LLVM
+         if (genLLVM)
+         {
+            // Phase 6: convert the tree-structured program (in the AST)
+            // to a linear list of (not really) basic blocks.
+            BlockList blocks;
+            prog->genBlocks(blocks);
+            if (showBasicBlocks)
+            {
+               log << "\nBasic Blocks\n";
+               prog->showBB(log);
+            }
+
+            prog->genLLVM();
+	     std::cerr << "LLVM Generated " << ".\n";
+         }
+
+
             cout << "Done!\n";
         }
     }
@@ -687,6 +717,12 @@ int main(int argc, char *argv[])
     locale user_locale = locale("");
     locale::global(user_locale);
     Glib::init();
+
+  InitializeNativeTarget();
+  LLVMContext &Context = getGlobalContext();
+
+  // Make the module, which holds all the code.
+  TheModule = new Module("main", Context);
 
     cerr << "MEC (" << today() << ").\n\n";
 
@@ -716,6 +752,7 @@ int main(int argc, char *argv[])
             "      T    Trace execution until program terminates\n"
             "      Tn   Trace execution for n context switches\n"
             "      W    Show warnings about incompatible protocols\n"
+            "      Z    Generate LLVM Code\n"
             "   -------------------------------------------------------------\n"
             " Default settings: ";
         cerr << (drawAST         ? "+A"   : "-A")  << ' ';
@@ -730,6 +767,7 @@ int main(int argc, char *argv[])
         cerr << (comRun          ? "+R"   : "-R")  << ' ';
         cerr << (tracing         ? "+T"   : "-T")  << ' ';
         cerr << (showWarnings    ? "+W"   : "-W")  << ' ';
+        cerr << (genLLVM    	    ? "+Z"   : "-Z")  << ' ';
         cerr << endl;
         return 0;
     }
@@ -741,6 +779,46 @@ int main(int argc, char *argv[])
         if (!success)
             return 1;
     }
+
+
+   // Create the JIT.
+  TheExecutionEngine = EngineBuilder(TheModule).create();
+
+  {
+    ExistingModuleProvider OurModuleProvider(TheModule);
+    FunctionPassManager OurFPM(&OurModuleProvider);
+      
+    // Set up the optimizer pipeline.  Start with registering info about how the
+    // target lays out data structures.
+    OurFPM.add(new TargetData(*TheExecutionEngine->getTargetData()));
+    // Promote allocas to registers.
+    OurFPM.add(createPromoteMemoryToRegisterPass());
+    // Do simple "peephole" optimizations and bit-twiddling optzns.
+    OurFPM.add(createInstructionCombiningPass());
+    // Reassociate expressions.
+    OurFPM.add(createReassociatePass());
+    // Eliminate Common SubExpressions.
+    OurFPM.add(createGVNPass());
+    // Simplify the control flow graph (deleting unreachable blocks, etc).
+    OurFPM.add(createCFGSimplificationPass());
+
+    OurFPM.doInitialization();
+
+    // Set the global so the code gen can use this.
+    TheFPM = &OurFPM;
+
+    // Run the main "interpreter loop" now.
+    MainLoop();
+    
+    TheFPM = 0;
+    
+    // Print out all of the generated code.
+    TheModule->dump();
+    
+  }  // Free module provider (and thus the module) and pass manager.
+
+
+
     return 0;
 }
 

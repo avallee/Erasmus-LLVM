@@ -8,7 +8,7 @@
 
 using namespace std;
 
-    BasicBlock::BasicBlock(int start, int transfer)
+BasicBlock::BasicBlock(int start, int transfer)
 : start(start), transfer(transfer), altTransfer(0),
     writeTransfer(true), closure(0), unlock(false) //, lock(false)
 {

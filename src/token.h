@@ -8,7 +8,7 @@
 #include "error.h"
 
 #include <string>
-#include <glibmm/ustring.h>
+#include <glibmm.h>
 
 using namespace std;
 
