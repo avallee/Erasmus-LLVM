@@ -45,6 +45,10 @@
  * 090718 Fixed
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "ast.h"
 #include "basicblocks.h"
 #include "error.h"
@@ -76,7 +80,7 @@ using namespace std;
  *  changes to the prelude, then both this value and prelude.cpp should
  *  be changed.
  */
-const Glib::ustring PRELUDE_VERSION = "43";
+const Glib::ustring PRELUDE_VERSION = "44";
 
 /** Compiler option  "A": Write AST to a file. */
 bool drawAST = false;
@@ -386,7 +390,7 @@ bool compile(Glib::ustring clArg)
             case 'p':
             case 'P':
                 if (clArg[0] == '+')
-                    preludeFileName = clArg.substr(2) + "\\prelude.cpp";
+                    preludeFileName = clArg.substr(2) + DIRECTORY_SEPARATOR_S "prelude.cpp";
                 break;
 
                 // Compile and run
@@ -583,16 +587,16 @@ bool compile(Glib::ustring clArg)
 
                 // Phase 7: interleave the generated code with pieces of the prelude.
                 ifstream prelude(preludeFileName.c_str());
-                if ( ! prelude)
+                if ( ! prelude.good())
                     Error() << "Failed to open '" << preludeFileName << "'\n" << THROW;
 
                 string firstLine;
                 getline(prelude, firstLine);
-                Glib::ustring::size_type b = firstLine.find_first_of("01243456789");
-                Glib::ustring::size_type e = firstLine.find_first_not_of("01243456789");
-                if (b == Glib::ustring::npos && e == Glib::ustring::npos)
+                Glib::ustring::size_type b = firstLine.find_first_of("0123456789");
+                if (b == Glib::ustring::npos)
                     Error() << "No firstLine in prelude.cpp." << THROW;
-                Glib::ustring version = firstLine.substr(b, e - b);
+                Glib::ustring::size_type e = firstLine.find_first_not_of("0123456789", b);
+                Glib::ustring version = firstLine.substr(b, (e==ustring::npos)?ustring::npos:b-e);
                 if (version != PRELUDE_VERSION)
                 {
                     cerr << "Incompatibility:\n";
@@ -680,8 +684,8 @@ bool compile(Glib::ustring clArg)
 int main(int argc, char *argv[])
 {
 
-//    locale user_locale = locale("");
-//    locale::global(user_locale);
+    locale user_locale = locale("");
+    locale::global(user_locale);
     Glib::init();
 
     cerr << "MEC (" << today() << ").\n\n";
