@@ -154,13 +154,13 @@ void extract(istream & is, ostream & os)
 }
 
 
-/** Read the prelude from "//*X" to //*Y".
+/** Read the prelude from "// *X" to // *Y".
  * The file \a prelude.cpp contains C++ code that is used by all
  * generated programs.  It is divided into "paragraphs" by comments
- * of the form "//*X", where "X" is a letter.
+ * of the form "// *X", where "X" is a letter.
  * \param is is the stream to read from.
  * \param os is the stream to copy to.
- * \param start indicates where to start copying: it immediately follows "//*".
+ * \param start indicates where to start copying: it immediately follows "// *".
  */
 void copyprelude(istream & is, ostream & os, Glib::ustring start)
 {
