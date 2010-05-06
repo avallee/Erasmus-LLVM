@@ -10,6 +10,7 @@
 
 #include <list>
 #include <stack>
+#include <glibmm.h>
 
 using namespace std;
 
@@ -31,7 +32,7 @@ class Parser
          * \param message is the error message,
          *        reported if the next token has a different kind.
          */
-        void check(TokenKind kind, string message);
+        void check(TokenKind kind, Glib::ustring message);
 
 
         /** Match the next token.
@@ -43,7 +44,7 @@ class Parser
         bool match(TokenKind kind);
 
         /** Report a missing identifier, and give a warning about keywords. */
-        void checkIdentifier(string msg);
+        void checkIdentifier(Glib::ustring msg);
 
         /** Check that a name list has only one name in it. */
         void checkNames(List names, Errpos ep);

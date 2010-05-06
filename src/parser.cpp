@@ -16,6 +16,7 @@
 #include <stack>
 
 using namespace std;
+using Glib::ustring;
 
 int Parser::caseTempNum = 0;
 
@@ -26,7 +27,7 @@ Parser::Parser(list<Token> toks) : tokens(toks)
     tki = tokens.begin();
 }
 
-void Parser::check(TokenKind kind, string message)
+void Parser::check(TokenKind kind, ustring message)
 {
     if (tki->kind == kind)
         ++tki;
@@ -45,7 +46,7 @@ bool Parser::match(TokenKind kind)
         return false;
 }
 
-void Parser::checkIdentifier(string message)
+void Parser::checkIdentifier(ustring message)
 {
     if (tki->keyword)
         Error() << "Syntax: " << message << "('" << tki->value << "' is a keyword.)" << tki->ep << THROW;

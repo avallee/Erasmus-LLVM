@@ -123,7 +123,10 @@ Glib::ustring readChars(Glib::ustring::iterator pc, char term, Glib::ustring lin
     {
         ++pc;
         if (*pc == term)
+        {
+            ++pc;
             return result;
+        }
         else if (*pc == '\0')
         {
             cerr << "Warning: line break in character or text literal.\n" << line;
@@ -195,8 +198,6 @@ void Scanner::scanFile(string filename, list<Token> & tokens)
         int state = 0;
         do
         {
-            if(pc != source_begin)
-                ++pc;
             switch (state)
             {
                 case 0: // Initial state: no context
@@ -208,18 +209,26 @@ void Scanner::scanFile(string filename, list<Token> & tokens)
                         source_begin = pc = srcit->begin();
                     }
                     else if (*pc == '-')
+                    {
                         state = 1;
+                        ++pc;
+                    }
                     else if (!isspace(*pc))
                         state = 3;
+                    else
+                        ++pc;
                     break;
 
                 case 1: // Seen '-': might be a comment
                     if (*pc == '-')
+                    {
                         state = 2;
+                        ++pc;
+                    }
                     else
                     {
-                        --pc;
                         state = 3;
+                        --pc;
                     }
                     break;
 
@@ -292,14 +301,12 @@ void Scanner::scanFile(string filename, list<Token> & tokens)
                 if (dots)
                     tokens.push_back(Token(ep, OP_DOTS, ".."));
             }
-            --pc;
         }
         else if (isalpha(*pc))
         {
             string idval;
             while (isalnum(*pc) || *pc == '_')
                 idval += *pc++;
-            --pc;
             if (keywords.find(idval) == keywords.end())
                 // Not a keyword - must be an identifier
                 tokens.push_back(Token(ep, IDENVAL, idval));
@@ -527,6 +534,7 @@ void Scanner::scanFile(string filename, list<Token> & tokens)
                     cerr << "Warning: illegal character." << ep;
 
             }
+            ++pc;
         }
     }
 }

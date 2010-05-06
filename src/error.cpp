@@ -10,7 +10,7 @@ Error & Error::operator<<(const ErrorReporter & rep)
     if (rep == REPORT)
         cerr << os.str();
     else
-        throw os.str();
+        throw Glib::ustring(os.str());
     return *this;
 }
 
