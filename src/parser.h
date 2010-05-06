@@ -137,7 +137,7 @@ class Parser
         Node parseProtocolFactor();
 
         /** Parse a slot declaration - may return more than one declaration.
-        /*  \param alias is true if the declaration starts with 'alias'.
+        *  \param alias is true if the declaration starts with 'alias'.
         */
         List parseSlotDeclaration(bool alias);
 

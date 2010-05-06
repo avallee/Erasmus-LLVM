@@ -22,7 +22,7 @@ struct Errpos
      * \param lineNum is the number of the source code line.
      * \param charPos is the position of the character on the line.
      */
-    Errpos(Glib::ustring pLine = 0, int lineNum = 0, int charPos = 0)
+    Errpos(Glib::ustring pLine = "", int lineNum = 0, int charPos = 0)
         : pLine(pLine), lineNum(lineNum), charPos(charPos)
     {}
 
